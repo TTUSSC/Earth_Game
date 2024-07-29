@@ -1,4 +1,6 @@
 <script></script>
 <template>
-  <h1>This Stamp Page</h1>
+  <div>
+    <h1>蓋章！</h1>
+  </div>
 </template>

@@ -1,4 +1,6 @@
 <script></script>
 <template>
-  <h1>This Home Page</h1>
+  <div>
+    <h1>大同大學社團博覽會 大地遊戲</h1>
+  </div>
 </template>

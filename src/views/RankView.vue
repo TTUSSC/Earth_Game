@@ -1,4 +1,6 @@
 <script></script>
 <template>
-  <h1>This Rank Page</h1>
+  <div>
+    <h1>排行榜</h1>
+  </div>
 </template>
