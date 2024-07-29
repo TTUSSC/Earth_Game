@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import NotFound from '../views/NotFound.vue'
+import RankView from '../views/RankView.vue'
+import StampView from '../views/StampView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -13,30 +15,20 @@ const router = createRouter({
     {
       path: '/stamp',
       name: 'stamp',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/StampView.vue')
+      component: StampView
     },
     {
       path: '/rank',
       name: 'rank',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/RankView.vue')
+      component: RankView
     },
 
     // error path
     {
       path: '/404',
       name: 'NotFound',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: NotFound
     },
-
     {
       path: '/:pathMatch(.*)*',
       name: 'NotFound',
