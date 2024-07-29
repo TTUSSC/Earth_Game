@@ -4,12 +4,19 @@
   <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-danger">
     <div class="container-fluid">
       <RouterLink to="/" class="navbar-brand">
-        <img src="../../public/SSC_logo.png" height="32px">
+        <img src="../../public/SSC_logo.png" height="32px" />
         <!-- 社團博覽會大地遊戲 -->
       </RouterLink>
 
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
-        aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarCollapse"
+        aria-controls="navbarCollapse"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
         <span class="navbar-toggler-icon"></span>
       </button>
 
