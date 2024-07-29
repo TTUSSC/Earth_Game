@@ -1,44 +1,29 @@
-# workflow的名字
 name: deploy
 
-# 當以下事件發生時，觸發
-on:
-  # 這邊設定的是：push/pullrequest到main時即觸發
-  push:
-    branches:
-      - main
-  # pull_request:
-  # branches:
-  # - main
+on: [push]
 
-  # 有加這行可以手動觸發actions
-  workflow_dispatch:
-
-# 觸發內容
 jobs:
-  # 這個workflow有個job叫做build
   build:
-    # 這個job要run在ubuntu上
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
 
-    # job的步驟要做些什麼咧
     steps:
-      # 1. 專門for node.js的actions，記得依node.js版本更新其後version
-      - uses: actions/checkout@v4
-      # 把vue內容build起來
-      - name: Install & Build # 執行
-        run: |
-          npm install
-          npm run build
+      - name: 🛎️ Checkout code
+        uses: actions/checkout@v4
 
-      # 2. deploy
-      - name: Deploy
-        # 別人的actions拿來借用
-        uses: JamesIves/github-pages-deploy-action@releases/v4
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          token: ${{ secrets.ACCESS_TOKEN }} # Settings > Secret 建立的 ACCESS_TOKEN，推同個 repo 的話可以不需要
+          node-version: '21'
+
+      - name: 📥 Install dependencies
+        run: npm install
+
+      - name: 🏗️ Build
+        run: npm run build
+
+      - name: 🚀Deploy to GitHub Pages🚀 # --> this deploys to gh-pages
+        if: github.ref == 'refs/heads/main'
+        uses: peaceiris/actions-gh-pages@v3
+        with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          BRANCH: gh-pages # deploy 到 gh-pages 這個分支
-          FOLDER: dist # build 後的資料夾
+          publish_dir: ./dist
