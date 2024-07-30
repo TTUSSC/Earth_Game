@@ -1,10 +1,10 @@
-<script></script>
+<script setup></script>
 
 <template>
   <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-danger">
     <div class="container-fluid">
       <RouterLink to="/" class="navbar-brand">
-        <img src="../../public/SSC_logo.png" height="32px" />
+        <img src="/SSC_logo.png" height="32px" />
         <span class="title">社團博覽會大地遊戲</span>
       </RouterLink>
 

@@ -7,8 +7,8 @@ import Partner from '../views/PartnerView.vue'
 import NotFound from '../views/NotFound.vue'
 
 const router = createRouter({
-  linkActiveClass: "active",
-  linkExactActiveClass: "",
+  linkActiveClass: 'active',
+  linkExactActiveClass: '',
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
