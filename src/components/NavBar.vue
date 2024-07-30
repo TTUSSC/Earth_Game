@@ -5,7 +5,7 @@
     <div class="container-fluid">
       <RouterLink to="/" class="navbar-brand">
         <img src="../../public/SSC_logo.png" height="32px" />
-        <!-- 社團博覽會大地遊戲 -->
+        <span class="title">社團博覽會大地遊戲</span>
       </RouterLink>
 
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
