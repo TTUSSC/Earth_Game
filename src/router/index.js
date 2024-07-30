@@ -30,10 +30,10 @@ const router = createRouter({
       path: '/partner',
       component: Partner
     },
-    {
-      path: '/user',
-      component: ProfileView
-    },
+    // {
+    //   path: '/user',
+    //   component: ProfileView
+    // },
     {
       path: '/user/:id',
       component: ProfileView

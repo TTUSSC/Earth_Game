@@ -1,6 +1,6 @@
 <script></script>
 <template>
-  <div>
+  <div class="w-75">
     <h1>社博大地遊戲</h1>
 
   </div>

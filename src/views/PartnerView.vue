@@ -1,6 +1,6 @@
 <script></script>
 <template>
-    <div>
+    <div class="container w-75">
         <h1 class="mb-4">主辦單位</h1>
         <div class="text-center">
             <h2>科學開源服務社</h2>
