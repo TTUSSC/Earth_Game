@@ -6,6 +6,8 @@ import ProfileView from '../views/ProfileView.vue'
 import NotFound from '../views/NotFound.vue'
 
 const router = createRouter({
+  linkActiveClass: "active",
+  linkExactActiveClass: "",
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
