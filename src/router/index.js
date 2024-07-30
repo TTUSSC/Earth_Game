@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import RankView from '../views/RankView.vue'
 import StampView from '../views/StampView.vue'
 import ProfileView from '../views/ProfileView.vue'
+import Partner from '../views/Partner.vue'
 import NotFound from '../views/NotFound.vue'
 
 const router = createRouter({
@@ -24,6 +25,10 @@ const router = createRouter({
       path: '/rank',
       name: 'rank',
       component: RankView
+    },
+    {
+      path: '/partner',
+      component: Partner
     },
     {
       path: '/user',

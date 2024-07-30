@@ -24,6 +24,9 @@
           <li class="nav-item">
             <RouterLink to="/rank" class="nav-link">排行榜</RouterLink>
           </li>
+          <li class="nav-item">
+            <RouterLink to="/partner" class="nav-link">合作夥伴</RouterLink>
+          </li>
         </ul>
       </div>
     </div>
