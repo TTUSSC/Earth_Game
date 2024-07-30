@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import RankView from '../views/RankView.vue'
 import StampView from '../views/StampView.vue'
+import ProfileView from '../views/ProfileView.vue'
 import NotFound from '../views/NotFound.vue'
 
 const router = createRouter({
@@ -21,6 +22,14 @@ const router = createRouter({
       path: '/rank',
       name: 'rank',
       component: RankView
+    },
+    {
+      path: '/user',
+      component: ProfileView
+    },
+    {
+      path: '/user/:id',
+      component: ProfileView
     },
 
     // error path
