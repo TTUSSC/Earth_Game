@@ -3,7 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import RankView from '../views/RankView.vue'
 import StampView from '../views/StampView.vue'
 import ProfileView from '../views/ProfileView.vue'
-import Partner from '../views/Partner.vue'
+import Partner from '../views/PartnerView.vue'
 import NotFound from '../views/NotFound.vue'
 
 const router = createRouter({
