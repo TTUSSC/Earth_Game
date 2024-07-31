@@ -1,15 +1,14 @@
 <script setup>
-import { ref, computed } from 'vue';
-import { sha256 } from '@/assets/sha256';
+import { ref, computed } from 'vue'
+import { sha256 } from '@/assets/sha256'
 
-
-const account = ref(" ");
+const account = ref(' ')
 const hashed_account = computed(() => {
   let plain = account.value.trim()
-  if (plain == "") {
-    return "";
+  if (plain == '') {
+    return ''
   }
-  return sha256(plain);
+  return sha256(plain)
 })
 </script>
 <template>
@@ -23,13 +22,16 @@ const hashed_account = computed(() => {
         <div class="text-break">{{ hashed_account }}</div>
       </div>
       <div class="col-12 mb-3">
-        <input type="text" class="form-control" id="account" v-model="account" placeholder="輸入電話號碼" required>
-        <div class="valid-feedback">
-          Looks good!
-        </div>
-        <div class="invalid-feedback">
-          Looks bad!
-        </div>
+        <input
+          type="text"
+          class="form-control"
+          id="account"
+          v-model="account"
+          placeholder="輸入電話號碼"
+          required
+        />
+        <div class="valid-feedback">Looks good!</div>
+        <div class="invalid-feedback">Looks bad!</div>
       </div>
       <div class="col-12">
         <button type="submit" class="btn btn-primary">登入</button>

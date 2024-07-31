@@ -5,8 +5,14 @@ import createQRcode from '../components/createQRcode.vue'
   <div>
     <h1>社博大地遊戲</h1>
     <p class="d-inline-flex gap-1">
-      <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample"
-        aria-expanded="false" aria-controls="collapseExample">
+      <button
+        class="btn btn-primary"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#collapseExample"
+        aria-expanded="false"
+        aria-controls="collapseExample"
+      >
         掃描 QRcode
       </button>
     </p>
