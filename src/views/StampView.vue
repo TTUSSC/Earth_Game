@@ -1,5 +1,5 @@
 <script setup>
-import createQRcode from '@/components/createQRcode.vue';
+import createQRcode from '@/components/createQRcode.vue'
 import { ref, computed } from 'vue'
 import { sha256 } from '@/assets/sha256'
 
@@ -23,7 +23,14 @@ const hashed_account = computed(() => {
         <div class="text-break">{{ hashed_account }}</div>
       </div> -->
       <div class="col-12 mb-3">
-        <input type="text" class="form-control" id="account" v-model="account" placeholder="輸入電話號碼" required />
+        <input
+          type="text"
+          class="form-control"
+          id="account"
+          v-model="account"
+          placeholder="輸入電話號碼"
+          required
+        />
         <div class="valid-feedback">Looks good!</div>
         <div class="invalid-feedback">Looks bad!</div>
       </div>
@@ -34,34 +41,75 @@ const hashed_account = computed(() => {
 
     <ul class="nav nav-tabs mb-2" id="myTab" role="tablist">
       <li class="nav-item" role="presentation">
-        <button class="nav-link active" id="qrcode-tab" data-bs-toggle="tab" data-bs-target="#qrcode-tab-pane"
-          type="button" role="tab" aria-controls="qrcode-tab-pane" aria-selected="true">
+        <button
+          class="nav-link active"
+          id="qrcode-tab"
+          data-bs-toggle="tab"
+          data-bs-target="#qrcode-tab-pane"
+          type="button"
+          role="tab"
+          aria-controls="qrcode-tab-pane"
+          aria-selected="true"
+        >
           QR code
         </button>
       </li>
       <li class="nav-item" role="presentation">
-        <button class="nav-link" id="card-tab" data-bs-toggle="tab" data-bs-target="#card-tab-pane" type="button"
-          role="tab" aria-controls="card-tab-pane" aria-selected="false">
+        <button
+          class="nav-link"
+          id="card-tab"
+          data-bs-toggle="tab"
+          data-bs-target="#card-tab-pane"
+          type="button"
+          role="tab"
+          aria-controls="card-tab-pane"
+          aria-selected="false"
+        >
           集點卡
         </button>
       </li>
       <li class="nav-item" role="presentation">
-        <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button"
-          role="tab" aria-controls="profile-tab-pane" aria-selected="false">
+        <button
+          class="nav-link"
+          id="profile-tab"
+          data-bs-toggle="tab"
+          data-bs-target="#profile-tab-pane"
+          type="button"
+          role="tab"
+          aria-controls="profile-tab-pane"
+          aria-selected="false"
+        >
           個人資料
         </button>
       </li>
     </ul>
     <div class="tab-content" id="myTabContent">
-      <div class="tab-pane fade show active" id="qrcode-tab-pane" role="tabpanel" aria-labelledby="qrcode-tab"
-        tabindex="0">
+      <div
+        class="tab-pane fade show active"
+        id="qrcode-tab-pane"
+        role="tabpanel"
+        aria-labelledby="qrcode-tab"
+        tabindex="0"
+      >
         QR code
-        <createQRcode :url="hashed_account" v-if='hashed_account != ""' />
+        <createQRcode :url="hashed_account" v-if="hashed_account != ''" />
       </div>
-      <div class="tab-pane fade" id="card-tab-pane" role="tabpanel" aria-labelledby="card-tab" tabindex="0">
+      <div
+        class="tab-pane fade"
+        id="card-tab-pane"
+        role="tabpanel"
+        aria-labelledby="card-tab"
+        tabindex="0"
+      >
         集點卡
       </div>
-      <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+      <div
+        class="tab-pane fade"
+        id="profile-tab-pane"
+        role="tabpanel"
+        aria-labelledby="profile-tab"
+        tabindex="0"
+      >
         個人資料
       </div>
     </div>

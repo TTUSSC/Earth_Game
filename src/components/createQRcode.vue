@@ -1,9 +1,9 @@
 <script setup>
 const props = defineProps({
-  'url': String,
+  url: String
 })
 
-var qrapi = "https://quickchart.io/qr?size=1080&margin=2&text=";
+var qrapi = 'https://quickchart.io/qr?size=1080&margin=2&text='
 console.log(qrapi + props.url)
 </script>
 <template>
