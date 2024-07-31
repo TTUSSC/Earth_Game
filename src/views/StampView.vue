@@ -13,7 +13,7 @@ const hashed_account = computed(() => {
 })
 </script>
 <template>
-  <div class="container w-75">
+  <div>
     <h1 class="title">蓋章！</h1>
 
     <!-- 表單 -->

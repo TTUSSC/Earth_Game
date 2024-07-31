@@ -1,7 +1,7 @@
 <script></script>
 <template>
-  <div class="container w-75">
-    <h1 class="my-5">主辦單位</h1>
+  <div>
+    <h1 class="my-3">主辦單位</h1>
     <div class="text-center">
       <h2>科學開源服務社</h2>
     </div>
