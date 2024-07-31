@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&display=swap');
+
 main > .container {
   padding-top: 60px;
 }
@@ -7,9 +9,6 @@ main > .container {
   max-width: 680px;
   padding: 0 15px;
 }
-
-@import url(./font/GenWanMin2-L.ttc);
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Noto+Sans+TC:wght@100..900&display=swap');
 
 .title {
   font-family: 'GenWanMin', serif !important;
