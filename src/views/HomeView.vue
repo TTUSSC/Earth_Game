@@ -1,5 +1,4 @@
 <script setup>
-import { ref } from 'vue'
 import createQRcode from '../components/createQRcode.vue'
 </script>
 <template>
