@@ -1,9 +1,12 @@
-<script></script>
+<script setup>
+const props = defineProps({
+  'url': String,
+})
+
+var qrapi = "https://quickchart.io/qr?size=1080&margin=2&text=";
+console.log(qrapi + props.url)
+</script>
 <template>
-  <img
-    class="qrcode img-fluid rounded"
-    src="https://quickchart.io/qr?size=1080&margin=2&text=https://ttussc.github.io/Earth_Game"
-    alt=""
-  />
+  <img class="qrcode img-fluid rounded" :src="qrapi + props.url" alt="" />
 </template>
 <style></style>
