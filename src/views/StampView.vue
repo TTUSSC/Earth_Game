@@ -1,9 +1,15 @@
 <script setup>
 import { ref, computed } from 'vue';
+import { sha256 } from '@/assets/sha256';
+
 
 const account = ref(" ");
 const hashed_account = computed(() => {
-  return account.value;
+  let plain = account.value.trim()
+  if (plain == "") {
+    return "";
+  }
+  return sha256(plain);
 })
 </script>
 <template>
@@ -11,11 +17,12 @@ const hashed_account = computed(() => {
     <h1 class="title">蓋章！</h1>
 
     <!-- 表單 -->
-    <form class="row align-items-center needs-validation">
+    <div class="row align-items-center needs-validation">
       <div class="col-12 mb-3">
-        雜湊值為：{{ hashed_account }}
+        <strong>雜湊值為：</strong>
+        <div class="text-break">{{ hashed_account }}</div>
       </div>
-      <div class="col mb-3">
+      <div class="col-12 mb-3">
         <input type="text" class="form-control" id="account" v-model="account" placeholder="輸入電話號碼" required>
         <div class="valid-feedback">
           Looks good!
@@ -27,6 +34,6 @@ const hashed_account = computed(() => {
       <div class="col-12">
         <button type="submit" class="btn btn-primary">登入</button>
       </div>
-    </form>
+    </div>
   </div>
 </template>
