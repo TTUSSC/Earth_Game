@@ -11,6 +11,21 @@ const hashed_account = computed(() => {
   }
   return sha256(plain)
 })
+
+let account_locked = ref(false);
+let btn_class = ref("btn btn-primary");
+let btn_text = ref("鎖定");
+
+const lock = () => {
+  account_locked.value = !account_locked.value;
+  if (account_locked.value) {
+    btn_class.value = "btn btn-danger";
+    btn_text.value = "解鎖"
+  } else {
+    btn_class.value = "btn btn-primary";
+    btn_text.value = "鎖定"
+  }
+}
 </script>
 <template>
   <div>
@@ -18,98 +33,52 @@ const hashed_account = computed(() => {
 
     <!-- 表單 -->
     <div class="row align-items-center needs-validation my-3">
-      <!-- <div class="col-12 mb-3">
+      <!--
+      <div class="col-12 mb-3">
         <strong>雜湊值為：</strong>
         <div class="text-break">{{ hashed_account }}</div>
-      </div> -->
-      <div class="col-12 mb-3">
-        <input
-          type="text"
-          class="form-control"
-          id="account"
-          v-model="account"
-          placeholder="輸入電話號碼"
-          required
-        />
+      </div>
+      -->
+      <div class="col mb-3">
+        <input type="text" class="form-control" id="account" v-model="account" placeholder="輸入電話號碼" required
+          :disabled="account_locked" />
         <div class="valid-feedback">Looks good!</div>
         <div class="invalid-feedback">Looks bad!</div>
       </div>
-      <!-- <div class="col-12">
-        <button type="submit" class="btn btn-primary">綁定</button>
-      </div> -->
+      <div class="col-3 mb-3">
+        <button type="submit" class="btn" :class="btn_class" @click="lock">{{ btn_text }}</button>
+      </div>
     </div>
 
     <ul class="nav nav-tabs mb-2" id="myTab" role="tablist">
       <li class="nav-item" role="presentation">
-        <button
-          class="nav-link active"
-          id="qrcode-tab"
-          data-bs-toggle="tab"
-          data-bs-target="#qrcode-tab-pane"
-          type="button"
-          role="tab"
-          aria-controls="qrcode-tab-pane"
-          aria-selected="true"
-        >
+        <button class="nav-link active" id="qrcode-tab" data-bs-toggle="tab" data-bs-target="#qrcode-tab-pane"
+          type="button" role="tab" aria-controls="qrcode-tab-pane" aria-selected="true">
           QR code
         </button>
       </li>
       <li class="nav-item" role="presentation">
-        <button
-          class="nav-link"
-          id="card-tab"
-          data-bs-toggle="tab"
-          data-bs-target="#card-tab-pane"
-          type="button"
-          role="tab"
-          aria-controls="card-tab-pane"
-          aria-selected="false"
-        >
+        <button class="nav-link" id="card-tab" data-bs-toggle="tab" data-bs-target="#card-tab-pane" type="button"
+          role="tab" aria-controls="card-tab-pane" aria-selected="false">
           集點卡
         </button>
       </li>
       <li class="nav-item" role="presentation">
-        <button
-          class="nav-link"
-          id="profile-tab"
-          data-bs-toggle="tab"
-          data-bs-target="#profile-tab-pane"
-          type="button"
-          role="tab"
-          aria-controls="profile-tab-pane"
-          aria-selected="false"
-        >
+        <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button"
+          role="tab" aria-controls="profile-tab-pane" aria-selected="false">
           個人資料
         </button>
       </li>
     </ul>
     <div class="tab-content" id="myTabContent">
-      <div
-        class="tab-pane fade show active"
-        id="qrcode-tab-pane"
-        role="tabpanel"
-        aria-labelledby="qrcode-tab"
-        tabindex="0"
-      >
-        QR code
+      <div class="tab-pane fade show active" id="qrcode-tab-pane" role="tabpanel" aria-labelledby="qrcode-tab"
+        tabindex="0">
         <createQRcode :url="hashed_account" v-if="hashed_account != ''" />
       </div>
-      <div
-        class="tab-pane fade"
-        id="card-tab-pane"
-        role="tabpanel"
-        aria-labelledby="card-tab"
-        tabindex="0"
-      >
+      <div class="tab-pane fade" id="card-tab-pane" role="tabpanel" aria-labelledby="card-tab" tabindex="0">
         集點卡
       </div>
-      <div
-        class="tab-pane fade"
-        id="profile-tab-pane"
-        role="tabpanel"
-        aria-labelledby="profile-tab"
-        tabindex="0"
-      >
+      <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
         個人資料
       </div>
     </div>
