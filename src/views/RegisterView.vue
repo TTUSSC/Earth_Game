@@ -1,6 +1,5 @@
 <script setup>
 import { ref } from 'vue';
-import axios from 'axios';
 
 let name = ref(" ");
 let nick_name = ref("");
