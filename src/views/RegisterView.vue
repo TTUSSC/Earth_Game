@@ -9,6 +9,10 @@ let phone = ref("");
 let password = ref("");
 let formCheck = ref(false);
 
+const isLoading = ref(false);
+const registrationMessage = ref('');
+const isError = ref(false);
+
 // 添加錯誤信息
 const errors = ref({
     name: '',
@@ -22,6 +26,7 @@ const errors = ref({
 var formClass = ref("row g-3 my-3 needs-validation");
 
 const sendForm = async () => {
+    isLoading.value = true;
     try {
         const isValid = await validForm();
         if (isValid) {
@@ -37,12 +42,19 @@ const sendForm = async () => {
                 body: formData
             });
             console.log('Form submitted successfully')
+            isError.value = false;
+            registrationMessage.value = "註冊成功！";
+            clearForm();
         } else {
             console.log("驗證失敗或未勾選同意條款")
         }
     } catch (error) {
+        isError.value = true;
+        registrationMessage.value = "註冊表單錯誤：" + error;
         console.error("Error submitting form:", error);
         // 處理錯誤，比如顯示錯誤消息
+    } finally {
+        isLoading.value = false;
     }
 
     // 檢查有沒有上傳成功
@@ -77,13 +89,15 @@ const nameError = computed(() => validateField('name', name.value, { required: t
 const nickNameError = computed(() => validateField('nick_name', nick_name.value, { required: true }));
 const emailError = computed(() => validateField('email', email.value, { required: true, pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/ }));
 const phoneError = computed(() => validateField('phone', phone.value, { required: true, pattern: /^\d{10}$/ }));
-const passwordError = computed(() => validateField('password', password.value, { required: true, minLength: 6 }));
+//const passwordError = computed(() => validateField('password', password.value, { required: true, minLength: 6 }));
 const checkError = computed(() => validateField('check', formCheck.value, { required: true }));
 
 // 檢查整個表單是否有效
 const isFormValid = computed(() => {
-    return !nameError.value && !nickNameError.value && !emailError.value &&
-        !phoneError.value && !passwordError.value && checkError;
+    // return nameError.value && nickNameError.value && emailError.value &&
+    //     phoneError.value && passwordError.value && checkError.value;
+    return nameError.value && nickNameError.value && emailError.value &&
+        phoneError.value && checkError.value;
 });
 
 async function validForm() {
@@ -111,6 +125,8 @@ async function validForm() {
         for (var i = 0; i < data.length; i++) {
             if (data[i]["email"] === email.value) {
                 console.log("data conflict.");
+                isError.value = true;
+                registrationMessage.value = "電子信箱或電話號碼已經被註冊過了。";
                 return false; // 衝突，不通過
             }
         }
@@ -122,10 +138,25 @@ async function validForm() {
         return false && formValid; // 出錯時不通過
     }
 }
+
+// 清空表單的函數
+const clearForm = () => {
+    name.value = "";
+    nick_name.value = "";
+    email.value = "";
+    phone.value = "";
+    password.value = "";
+    formCheck.value = false;
+};
 </script>
 <template>
     <div>
         <h1>註冊</h1>
+        <!-- 顯示註冊結果訊息 -->
+        <div v-if="registrationMessage" class="mt-3" :class="['alert', isError ? 'alert-danger' : 'alert-success']"
+            role="alert">
+            {{ registrationMessage }}
+        </div>
         <form :class="formClass" @submit.prevent="sendForm" novalidate>
             <div class="col-md-6">
                 <input type="text" v-model="name" class="form-control" :class="{ 'is-invalid': !nameError }" name="name"
@@ -147,11 +178,11 @@ async function validForm() {
                     name="phone" id="phone" placeholder="電話號碼" required>
                 <div class="invalid-feedback">{{ errors.phone }}</div>
             </div>
-            <div class="col-md-6">
+            <!-- <div class="col-md-6">
                 <input type="password" v-model="password" class="form-control" :class="{ 'is-invalid': !passwordError }"
                     name="password" id="password" placeholder="密碼" required>
                 <div class="invalid-feedback">{{ errors.password }}</div>
-            </div>
+            </div> -->
             <div class="col-12">
                 <div class="form-check">
                     <input type="checkbox" class="form-check-input" :class="{ 'is-invalid': !checkError }"
@@ -163,8 +194,30 @@ async function validForm() {
                 </div>
             </div>
             <div class="col-6 d-grid mx-auto">
-                <button type="submit" class="btn btn-primary">註冊</button>
+                <button type="submit" class="btn btn-primary" :disabled="!isFormValid || isLoading">{{ isLoading ?
+                    '提交中...' : '註冊' }}</button>
             </div>
         </form>
+
+        <!-- Loading 覆蓋層 -->
+        <div v-if="isLoading" class="loading-overlay">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
     </div>
 </template>
+<style scoped>
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+</style>
