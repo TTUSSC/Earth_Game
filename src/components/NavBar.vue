@@ -8,15 +8,8 @@
         <span class="title">社團博覽會大地遊戲</span>
       </RouterLink>
 
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarCollapse"
-        aria-controls="navbarCollapse"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+        aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
 
@@ -33,6 +26,9 @@
           </li>
           <li class="nav-item">
             <RouterLink to="/partner" class="nav-link">合作夥伴</RouterLink>
+          </li>
+          <li class="nav-item">
+            <RouterLink to="/register" class="nav-link">註冊</RouterLink>
           </li>
         </ul>
       </div>
