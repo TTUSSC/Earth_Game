@@ -130,10 +130,20 @@ let user_phone = ref('');
       </div>
       <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
         <div v-if="users_index != -1">
-          <div>姓名: {{ user_name }}</div>
-          <div>暱稱: {{ user_nick_name }}</div>
-          <div>電子信箱: {{ user_email }}</div>
-          <div>電話號碼: {{ user_phone }}</div>
+
+          <div class="card">
+            <!-- <div class="card-header">
+              Featured
+            </div> -->
+            <div class="card-body">
+              <p class="card-text">
+              <div>姓名: {{ user_name }}</div>
+              <div>暱稱: {{ user_nick_name }}</div>
+              <div>電子信箱: {{ user_email }}</div>
+              <div>電話號碼: {{ user_phone }}</div>
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
