@@ -59,7 +59,7 @@ const onScanSuccess = (decodedText) => {
 
 const onScanFailure = (error) => {
     // 處理掃描失敗的情況
-    console.warn(`QR Code scanning failed: ${error}`)
+    //console.warn(`QR Code scanning failed: ${error}`)
 }
 
 onMounted(() => {

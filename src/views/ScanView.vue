@@ -4,15 +4,23 @@ import QRcodeReader from '@/components/QRcodeReader.vue';
 import { useAuthStore } from '@/stores/useAuthStore';
 import { useClubsStore } from '@/stores/useClubsStore';
 import { useUserStore } from '@/stores/useUsersStore';
+import { useRecordsStore } from '@/stores/useRecordsStore';
 
 const usersStore = useUserStore();
 const clubsStore = useClubsStore();
+const recordsStore = useRecordsStore();
 const authStore = useAuthStore();
 clubsStore.callAPI();
 usersStore.callAPI();
+recordsStore.callAPI();
+
+const waiting = ref(false);
 
 const sendStamp = async () => {
     isLoading.value = true;
+    if (await recordExist()) {
+        return;
+    }
     try {
         const formData = new FormData();
         formData.append("entry.1180634340", authStore.email);
@@ -43,25 +51,46 @@ const sendStamp = async () => {
     // }
 }
 
+const recordExist = async (club_email, user_email) => {
+    const record = await recordsStore.query_record(club_email, user_email);
+
+    if (record) {
+        // conflict
+        isError.value = true;
+        pageMsg.value = '已經蓋過章了！';
+        return true;
+    } else {
+        isError.value = false;
+        pageMsg.value = '';
+        return false;
+    }
+}
+
 const scanEmail = ref('');
 const scanName = ref('');
 
 const handleScanSuccess = async (data) => {
+    if (waiting.value) return;
+    waiting.value = true;
+
     scanEmail.value = data;
     let user = await usersStore.get_user_by_email(data);
     console.log(user);
     if (user) {
         if (user['nick_name'] != "") scanName.value = user['nick_name'];
         else scanName.value = user['name'];
+        isError.value = false;
         pageMsg.value = '掃描成功！' + scanName.value;
     } else {
         isError.value = true;
         pageMsg.value = '找不到 email: ' + data + ' 的帳號。'
         return;
     }
+    // check stamp
 
     // update 資料庫
     await sendStamp();
+    waiting.value = false;
 }
 
 const pageMsg = ref('');
