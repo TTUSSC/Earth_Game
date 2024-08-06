@@ -1,4 +1,6 @@
 import { defineStore } from 'pinia';
+import { useClubsStore } from './useClubsStore';
+import { ref } from 'vue';
 import axios from 'axios';
 
 let url = "https://script.google.com/macros/s/AKfycbwQGQY4CAhuYzI5AoAzsbWx4-aXTAONiZXpXq7Ue3MkojbgbvuKnDWXLk8wDZJLyx7P_g/exec";
@@ -19,9 +21,11 @@ export const useRecordsStore = defineStore('records', {
             console.log(this.data);
         },
         async query_record(club_email, user_email) {
+            console.log("query_record(" + club_email + ", " + user_email + ")")
             await this.callAPI();
             for (let i = 0; i < this.data.length; i++) {
-                if (this.data['club_email'] === club_email && this.data['user_email'] === user_email) {
+                console.log(this.data[i]['club_email'] + ' ' + this.data[i]['user_email']);
+                if (this.data[i]['club_email'] == club_email && this.data[i]['user_email'] == user_email) {
                     console.log("record found:");
                     console.log(this.data[i]);
                     return this.data[i];
@@ -31,16 +35,30 @@ export const useRecordsStore = defineStore('records', {
             return false;
         },
         async query_by_user(user_email) {
+            const clubsStore = useClubsStore();
+            // return a list
             await this.callAPI();
+            let list = [];
+            const club = ref();
             for (let i = 0; i < this.data.length; i++) {
-                if (this.data['user_email'] === user_email) {
-                    console.log("record found:");
-                    console.log(this.data[i]);
-                    return this.data[i];
+                if (this.data[i]['user_email'] === user_email) {
+                    club.value = await clubsStore.get_club_by_email(this.data[i]['club_email']);
+                    //let user_name = "";
+                    let club_name = club.value.name;
+                    list.push({
+                        user_email: this.data[i]['user_email'],
+                        club_name: club_name,
+                        club_email: this.data[i]['club_email'],
+                        created_time: this.data[i]['created_time'],
+                    });
                 }
             }
-            console.log("record not found.");
-            return false;
+            if (list == []) {
+                console.log('record not found');
+                list = false;
+            }
+            console.log('query_by_user list:', list);
+            return list;
         },
         async query_by_club(club_email) {
             await this.callAPI();

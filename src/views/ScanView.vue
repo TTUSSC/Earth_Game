@@ -18,7 +18,7 @@ const waiting = ref(false);
 
 const sendStamp = async () => {
     isLoading.value = true;
-    if (await recordExist()) {
+    if (await recordExist(authStore.email, scanEmail.value)) {
         return;
     }
     try {

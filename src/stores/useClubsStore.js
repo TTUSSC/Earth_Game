@@ -23,6 +23,17 @@ export const useClubsStore = defineStore('clubs', {
                 return;
             }
         },
+        async get_club_by_email(email) {
+            // return a list
+            if (this.data === null) await this.callAPI();
+            const club = this.data.find(club => club.email === email);
+            if (club) {
+                console.log("club found:", club);
+                return club;
+            }
+            console.log("club not found.");
+            return null;
+        },
         async get_user_by_email_password(email, password) {
             if (this.data === null) await this.callAPI();
             for (let i = 0; i < this.data.length; i++) {

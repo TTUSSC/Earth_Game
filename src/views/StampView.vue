@@ -4,9 +4,15 @@ import { ref, computed } from 'vue'
 import { sha256 } from '@/assets/sha256'
 import { useUserStore } from '@/stores/useUsersStore';
 import { useAuthStore } from '@/stores/useAuthStore';
+import { useRecordsStore } from '@/stores/useRecordsStore';
+import { useClubsStore } from '@/stores/useClubsStore';
 
 const userStore = useUserStore()
+const recordsStore = useRecordsStore();
+const clubsStore = useClubsStore();
 userStore.callAPI();
+recordsStore.callAPI();
+clubsStore.callAPI();
 
 const authStore = useAuthStore();
 
@@ -59,8 +65,24 @@ const lock = async () => {
   } else {
     isError.value = false;
     pageMsg.value = ""
+    await get_record();
   }
 }
+
+
+const records = ref([]);
+const get_record = async () => {
+  records.value = await recordsStore.query_by_user(authStore.email)
+  console.log("email: " + authStore.email, records)
+}
+
+const clubNames = computed(() => {
+  return records.value.reduce((acc, record) => {
+    const clubInfo = clubsStore.get_club_by_email(record.club_email);
+    acc[record.club_email] = clubInfo ? clubInfo.name : '未知社團';
+    return acc;
+  }, {});
+});
 </script>
 <template>
   <div>
@@ -98,7 +120,7 @@ const lock = async () => {
       </li>
       <li class="nav-item" role="presentation">
         <button class="nav-link" id="card-tab" data-bs-toggle="tab" data-bs-target="#card-tab-pane" type="button"
-          role="tab" aria-controls="card-tab-pane" aria-selected="false">
+          role="tab" aria-controls="card-tab-pane" aria-selected="false" @click="get_record">
           集點卡
         </button>
       </li>
@@ -115,7 +137,13 @@ const lock = async () => {
         <createQRcode :url="account.trim()" v-if="hashed_account != '' && authStore.isLoggedIn" />
       </div>
       <div class="tab-pane fade" id="card-tab-pane" role="tabpanel" aria-labelledby="card-tab" tabindex="0">
-        集點卡
+        <div class="mb-2">總點數：{{ records.length }}</div>
+        <div class="card" v-for="i in records" :key="i.created_time">
+          <div class=" card-body">
+            社團攤位：{{ i.club_name }}<br>
+            蓋章時間：{{ i.created_time }}
+          </div>
+        </div>
       </div>
       <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
         <div v-if="authStore.isLoggedIn">

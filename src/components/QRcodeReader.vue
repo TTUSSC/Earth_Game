@@ -54,12 +54,12 @@ const initScanner = () => {
 const onScanSuccess = (decodedText) => {
     result.value = decodedText
     // 可以在這裡處理掃描成功後的邏輯
-    emit('scan-success', decodedText)
+    emit('scan-success', decodedText);
 }
 
 const onScanFailure = (error) => {
     // 處理掃描失敗的情況
-    //console.warn(`QR Code scanning failed: ${error}`)
+    //console.warn(`QR Code scanning failed: ${error}`);
 }
 
 onMounted(() => {
