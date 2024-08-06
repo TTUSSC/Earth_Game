@@ -6,6 +6,7 @@ import ProfileView from '../views/ProfileView.vue'
 import Partner from '../views/PartnerView.vue'
 import NotFound from '../views/NotFound.vue'
 import RegisterView from '@/views/RegisterView.vue'
+import ScanView from '@/views/ScanView.vue'
 
 const router = createRouter({
   linkActiveClass: 'active',
@@ -34,6 +35,10 @@ const router = createRouter({
     {
       path: '/register',
       component: RegisterView
+    },
+    {
+      path: '/scan',
+      component: ScanView
     },
     // {
     //   path: '/user',
