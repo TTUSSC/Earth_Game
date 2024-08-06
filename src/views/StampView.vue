@@ -37,6 +37,7 @@ if (authStore.isLoggedIn) {
 }
 
 const lock = async () => {
+  console.log('lock btn pushed.');
   account_locked.value = !account_locked.value;
   if (account_locked.value) {
     btn_class.value = "btn btn-danger";
@@ -46,12 +47,11 @@ const lock = async () => {
     btn_text.value = "鎖定"
   }
 
-  authStore.login(account.value);
-  userStore.get_user_by_email(account.value);
+  await authStore.login(account.value);
 
   if (!authStore.isLoggedIn) {
     isError.value = true;
-    pageMsg.value = "找不到與電子郵件相符的帳號"
+    pageMsg.value = "找不到與電子郵件相符的帳號。尚未註冊帳號則點擊選單註冊帳號。"
 
     account_locked.value = false;
     btn_class.value = "btn btn-primary";
@@ -117,7 +117,7 @@ const lock = async () => {
         集點卡
       </div>
       <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
-        <div v-if="users_index != -1">
+        <div v-if="authStore.isLoggedIn">
 
           <div class="card">
             <!-- <div class="card-header">

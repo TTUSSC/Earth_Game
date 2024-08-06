@@ -18,8 +18,8 @@ export const useUserStore = defineStore('users', {
             console.log('useUsersStore:');
             console.log(this.data);
         },
-        get_user_by_email(email) {
-            console.log(email);
+        async get_user_by_email(email) {
+            if (this.data === null) await this.callAPI();
             for (let i = 0; i < this.data.length; i++) {
                 if (this.data[i]['email'] === email) {
                     console.log("found:")

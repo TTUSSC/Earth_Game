@@ -15,8 +15,12 @@ export const useAuthStore = defineStore('auth', {
         async login(email) {
             const usersStore = useUserStore();
 
-            let user = usersStore.get_user_by_email(email);
-            if (user) {
+            const user = await usersStore.get_user_by_email(email);
+            console.log('user:')
+            console.log(user)
+            if (user == {}) {
+                console.log('login failed :(');
+            } else {
                 this.token = user["user_id"];
 
                 this.name = user["name"];
@@ -24,8 +28,6 @@ export const useAuthStore = defineStore('auth', {
                 this.email = user["email"];
                 this.phone = user["phone_number"];
                 console.log("login successed!");
-            } else {
-                console.log('login failed :(');
             }
         },
         logout() {

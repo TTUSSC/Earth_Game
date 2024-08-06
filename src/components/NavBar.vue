@@ -1,4 +1,7 @@
-<script setup></script>
+<script setup>
+import { useAuthStore } from '@/stores/useAuthStore';
+const authStore = useAuthStore();
+</script>
 
 <template>
   <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-danger">
@@ -27,7 +30,7 @@
           <li class="nav-item">
             <RouterLink to="/partner" class="nav-link">合作夥伴</RouterLink>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" v-if="!authStore.isLoggedIn">
             <RouterLink to="/register" class="nav-link">註冊</RouterLink>
           </li>
         </ul>
