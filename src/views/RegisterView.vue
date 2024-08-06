@@ -123,7 +123,7 @@ async function validForm() {
 
         const data = response.data;
         for (var i = 0; i < data.length; i++) {
-            if (data[i]["email"] === email.value) {
+            if (data[i]["email"] === email.value || data[i]['phone_number'] === phone.value) {
                 console.log("data conflict.");
                 isError.value = true;
                 registrationMessage.value = "電子信箱或電話號碼已經被註冊過了。";
