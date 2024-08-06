@@ -11,14 +11,49 @@ const authStore = useAuthStore();
 clubsStore.callAPI();
 usersStore.callAPI();
 
+const sendStamp = async () => {
+    isLoading.value = true;
+    try {
+        const formData = new FormData();
+        formData.append("entry.1180634340", authStore.email);
+        formData.append("entry.1788223982", scanEmail.value);
+
+        await fetch('https://docs.google.com/forms/u/2/d/e/1FAIpQLScMibiJl3amUlq6x91EwApaW7XqnRTl51ZQagvWz3vNftR3tw/formResponse', {
+            method: 'POST',
+            mode: 'no-cors',
+            body: formData
+        });
+        console.log('Form submitted successfully')
+        isError.value = false;
+        pageMsg.value = "提交 " + scanName.value + " 蓋章紀錄成功！";
+    } catch (error) {
+        isError.value = true;
+        pageMsg.value = "紀錄提交錯誤：" + error;
+        console.error("Error submitting form:", error);
+        // 處理錯誤，比如顯示錯誤消息
+    } finally {
+        isLoading.value = false;
+    }
+
+    // 檢查有沒有上傳成功
+    // if (checkSubmit()) {
+    //     console.log("submit successed!");
+    // } else {
+    //     console.log("submit failed!");
+    // }
+}
+
+const scanEmail = ref('');
+const scanName = ref('');
+
 const handleScanSuccess = async (data) => {
+    scanEmail.value = data;
     let user = await usersStore.get_user_by_email(data);
     console.log(user);
     if (user) {
-        let name = '';
-        if (user['nick_name'] != "") name = user['nick_name'];
-        else name = user['name'];
-        pageMsg.value = '掃描成功！' + name;
+        if (user['nick_name'] != "") scanName.value = user['nick_name'];
+        else scanName.value = user['name'];
+        pageMsg.value = '掃描成功！' + scanName.value;
     } else {
         isError.value = true;
         pageMsg.value = '找不到 email: ' + data + ' 的帳號。'
@@ -26,7 +61,7 @@ const handleScanSuccess = async (data) => {
     }
 
     // update 資料庫
-
+    await sendStamp();
 }
 
 const pageMsg = ref('');
