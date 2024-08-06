@@ -1,13 +1,19 @@
 <script setup>
-import axios from 'axios';
 import createQRcode from '@/components/createQRcode.vue'
 import { ref, computed } from 'vue'
 import { sha256 } from '@/assets/sha256'
+import { useUserStore } from '@/stores/useUsersStore';
+import { useAuthStore } from '@/stores/useAuthStore';
+
+const userStore = useUserStore()
+userStore.callAPI();
+
+const authStore = useAuthStore();
 
 const pageMsg = ref('');
 const isError = ref(false);
 
-const account = ref('')
+const account = ref('');
 
 const hashed_account = computed(() => {
   let plain = account.value.trim()
@@ -21,14 +27,14 @@ let account_locked = ref(false);
 let btn_class = ref("btn btn-primary");
 let btn_text = ref("鎖定");
 
-const users_index = computed(() => {
-  for (let i = 0; i < users.value.length; i++) {
-    if (users.value[i]['email'] === account.value) {
-      return i;
-    }
+if (authStore.isLoggedIn) {
+  account.value = authStore.email;
+  if (!account_locked.value) {
+    account_locked.value = true;
+    btn_class.value = "btn btn-danger";
+    btn_text.value = "解鎖"
   }
-  return -1;
-});
+}
 
 const lock = async () => {
   account_locked.value = !account_locked.value;
@@ -40,14 +46,10 @@ const lock = async () => {
     btn_text.value = "鎖定"
   }
 
-  let url = "https://script.google.com/macros/s/AKfycbwQGQY4CAhuYzI5AoAzsbWx4-aXTAONiZXpXq7Ue3MkojbgbvuKnDWXLk8wDZJLyx7P_g/exec";
-  const resopnse = await axios.get(url, { params: { table: 'users' } });
-  users.value = resopnse.data;
-  console.log(users.value);
-  console.log(users_index.value);
+  authStore.login(account.value);
+  userStore.get_user_by_email(account.value);
 
-  let idx = users_index.value;
-  if (idx === -1) {
+  if (!authStore.isLoggedIn) {
     isError.value = true;
     pageMsg.value = "找不到與電子郵件相符的帳號"
 
@@ -57,22 +59,8 @@ const lock = async () => {
   } else {
     isError.value = false;
     pageMsg.value = ""
-    user_name.value = users.value[idx]['name'];
-    user_nick_name.value = users.value[idx]['nick_name'];
-    user_email.value = users.value[idx]['email'];
-    user_phone.value = users.value[idx]['phone_number'];
   }
 }
-
-const users = ref([]);
-const clubs = ref([]);
-const records = ref([]);
-
-let user_name = ref('');
-let user_nick_name = ref('');
-let user_email = ref('');
-let user_phone = ref('');
-
 </script>
 <template>
   <div>
@@ -123,7 +111,7 @@ let user_phone = ref('');
     <div class="tab-content" id="myTabContent">
       <div class="tab-pane fade show active" id="qrcode-tab-pane" role="tabpanel" aria-labelledby="qrcode-tab"
         tabindex="0">
-        <createQRcode :url="hashed_account" v-if="hashed_account != ''" />
+        <createQRcode :url="hashed_account" v-if="hashed_account != '' && authStore.isLoggedIn" />
       </div>
       <div class="tab-pane fade" id="card-tab-pane" role="tabpanel" aria-labelledby="card-tab" tabindex="0">
         集點卡
@@ -137,10 +125,10 @@ let user_phone = ref('');
             </div> -->
             <div class="card-body">
               <p class="card-text">
-              <div>姓名: {{ user_name }}</div>
-              <div>暱稱: {{ user_nick_name }}</div>
-              <div>電子信箱: {{ user_email }}</div>
-              <div>電話號碼: {{ user_phone }}</div>
+                <span>姓名: {{ authStore.name }}</span><br>
+                <span>暱稱: {{ authStore.nick_name }}</span><br>
+                <span>電子信箱: {{ authStore.email }}</span><br>
+                <span>電話號碼: {{ authStore.phone }}</span>
               </p>
             </div>
           </div>

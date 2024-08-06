@@ -17,7 +17,22 @@ export const useUserStore = defineStore('users', {
             this.data = response.data;
             console.log('useUsersStore:');
             console.log(this.data);
-        }
+        },
+        get_user_by_email(email) {
+            console.log(email);
+            for (let i = 0; i < this.data.length; i++) {
+                if (this.data[i]['email'] === email) {
+                    console.log("found:")
+                    console.log(this.data[i])
+                    return this.data[i];
+                }
+            }
+            return {};
+        },
     },
-    getters: {}
+    getters: {
+        get_data() {
+            return this.data;
+        },
+    }
 })
