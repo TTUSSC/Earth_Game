@@ -1,7 +1,7 @@
 <template>
-    <div class="card">
-        <div class="card-body">
-            <div class="ratio ratio-1x1" id="qr-reader" v-if="!scanComplete" width="500"></div>
+    <div class="card" style="overflow: hidden;">
+        <div class="card-body p-0" style="overflow: hidden;">
+            <div class="ratio ratio-1x1" id="qr-reader" v-if="!scanComplete"></div>
         </div>
         <div v-if="result">掃描結果: {{ result }}</div>
     </div>
@@ -23,7 +23,16 @@ const emit = defineEmits(['scan-success'])
 const initScanner = () => {
     try {
         html5QrCode = new Html5Qrcode("qr-reader")
-        const config = { fps: 10, qrbox: { width: 250, height: 250 } }
+        const containerWidth = document.getElementById('qr-reader').offsetWidth;
+        const containerHeight = document.getElementById('qr-reader').offsetHeight;
+
+        const config = {
+            fps: 10,
+            qrbox: { width: 250, height: 250 },
+            aspectRatio: 1,
+            width: containerWidth * 0.7,
+            height: containerHeight * 0.7
+        }
 
         html5QrCode.start(
             { facingMode: "environment" },
@@ -82,3 +91,23 @@ const toggleCamera = async () => {
     }
 }
 </script>
+<style>
+#qr-reader {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+#qr-reader video {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover;
+}
+
+#qr-reader canvas {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+</style>

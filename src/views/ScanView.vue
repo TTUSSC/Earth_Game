@@ -2,11 +2,11 @@
 import { ref } from 'vue';
 import QRcodeReader from '@/components/QRcodeReader.vue';
 
-const account = ref('');
+const scanResult = ref('');
 
 const handleScanSuccess = (data) => {
-    account.value = data
-    pageMsg.value = '掃描成功';
+    scanResult.value = data
+    pageMsg.value = '掃描成功！' + scanResult.value;
 }
 
 const pageMsg = ref('');
