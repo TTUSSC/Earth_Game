@@ -112,7 +112,7 @@ const lock = async () => {
     <div class="tab-content" id="myTabContent">
       <div class="tab-pane fade show active" id="qrcode-tab-pane" role="tabpanel" aria-labelledby="qrcode-tab"
         tabindex="0">
-        <createQRcode :url="hashed_account" v-if="hashed_account != '' && authStore.isLoggedIn" />
+        <createQRcode :url="account.value.trim()" v-if="hashed_account != '' && authStore.isLoggedIn" />
       </div>
       <div class="tab-pane fade" id="card-tab-pane" role="tabpanel" aria-labelledby="card-tab" tabindex="0">
         集點卡
