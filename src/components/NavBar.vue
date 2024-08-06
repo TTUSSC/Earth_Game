@@ -33,6 +33,9 @@ const authStore = useAuthStore();
           <li class="nav-item" v-if="!authStore.isLoggedIn">
             <RouterLink to="/register" class="nav-link">註冊</RouterLink>
           </li>
+          <li class="nav-item" v-if="!authStore.isLoggedIn || !authStore.is_club">
+            <RouterLink to="/scan" class="nav-link">我是社團</RouterLink>
+          </li>
         </ul>
       </div>
     </div>
