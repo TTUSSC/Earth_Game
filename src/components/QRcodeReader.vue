@@ -3,7 +3,6 @@
         <div class="card-body p-0" style="overflow: hidden;">
             <div class="ratio ratio-1x1" id="qr-reader" v-if="!scanComplete"></div>
         </div>
-        <div v-if="result">掃描結果: {{ result }}</div>
     </div>
     <div class="d-grid col-6 mx-auto my-4">
         <button :class="btn_class" type="button" @click="toggleCamera">{{ btn_text }}</button>
@@ -41,7 +40,10 @@ const initScanner = () => {
             onScanFailure
         )
     } catch (error) {
-        console.log('init scanner failed: ' + error)
+        console.log('init scanner failed: ' + error);
+        btn_class.value = 'btn btn-primary';
+        btn_text.value = '開啟相機';
+        camera_is_opened.value = !camera_is_opened.value;
     }
 }
 
