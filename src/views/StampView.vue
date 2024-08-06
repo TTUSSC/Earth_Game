@@ -139,7 +139,7 @@ const clubNames = computed(() => {
       </div>
       <div class="tab-pane fade" id="card-tab-pane" role="tabpanel" aria-labelledby="card-tab" tabindex="0">
         <div class="mb-2">總點數：{{ records.length }}</div>
-        <div class="card" v-for="i in records" :key="i.created_time">
+        <div class="card my-2" v-for="i in records" :key="i.created_time">
           <div class=" card-body">
             社團攤位：{{ i.club_name }}<br>
             蓋章時間：{{ i.created_time }}
