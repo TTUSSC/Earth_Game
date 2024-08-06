@@ -8,11 +8,12 @@ export const useAuthStore = defineStore('auth', {
         email: null,
         phone: null,
         stamps: null,
+        is_club: false,
 
         token: null,
     }),
     actions: {
-        async login(email) {
+        async user_login(email) {
             const usersStore = useUserStore();
 
             const user = await usersStore.get_user_by_email(email);

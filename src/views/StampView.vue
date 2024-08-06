@@ -47,7 +47,7 @@ const lock = async () => {
     btn_text.value = "鎖定"
   }
 
-  await authStore.login(account.value);
+  await authStore.user_login(account.value);
 
   if (!authStore.isLoggedIn) {
     isError.value = true;
@@ -66,7 +66,8 @@ const lock = async () => {
   <div>
     <h1 class="title">蓋章！</h1>
     <!-- 顯示註冊結果訊息 -->
-    <div v-if="pageMsg" class="mt-3" :class="['alert', isError ? 'alert-danger' : 'alert-success']" role="alert">
+    <div v-if="pageMsg" class="mt-3 text-break" :class="['alert', isError ? 'alert-danger' : 'alert-success']"
+      role="alert">
       {{ pageMsg }}
     </div>
     <!-- 表單 -->
