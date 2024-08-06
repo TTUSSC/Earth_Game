@@ -9,14 +9,19 @@ export const useUserStore = defineStore('users', {
     }),
     actions: {
         async callAPI() {
-            const response = await axios.get(url, {
-                params: {
-                    table: "users"
-                }
-            });
-            this.data = response.data;
-            console.log('useUsersStore:');
-            console.log(this.data);
+            try {
+                const response = await axios.get(url, {
+                    params: {
+                        table: "users"
+                    }
+                });
+                this.data = response.data;
+                console.log('useUsersStore:');
+                console.log(this.data);
+            } catch (error) {
+                console.log('call api error.')
+                return;
+            }
         },
         async get_user_by_email(email) {
             if (this.data === null) await this.callAPI();
