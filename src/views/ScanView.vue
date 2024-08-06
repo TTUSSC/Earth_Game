@@ -3,16 +3,30 @@ import { ref, computed } from 'vue';
 import QRcodeReader from '@/components/QRcodeReader.vue';
 import { useAuthStore } from '@/stores/useAuthStore';
 import { useClubsStore } from '@/stores/useClubsStore';
+import { useUserStore } from '@/stores/useUsersStore';
 
+const usersStore = useUserStore();
 const clubsStore = useClubsStore();
 const authStore = useAuthStore();
 clubsStore.callAPI();
+usersStore.callAPI();
 
-const scanResult = ref('');
+const handleScanSuccess = async (data) => {
+    let user = await usersStore.get_user_by_email(data);
+    console.log(user);
+    if (user) {
+        let name = '';
+        if (user['nick_name'] != "") name = user['nick_name'];
+        else name = user['name'];
+        pageMsg.value = '掃描成功！' + name;
+    } else {
+        isError.value = true;
+        pageMsg.value = '找不到 email: ' + data + ' 的帳號。'
+        return;
+    }
 
-const handleScanSuccess = (data) => {
-    scanResult.value = data
-    pageMsg.value = '掃描成功！' + scanResult.value;
+    // update 資料庫
+
 }
 
 const pageMsg = ref('');
