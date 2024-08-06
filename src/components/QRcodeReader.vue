@@ -12,6 +12,9 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { Html5Qrcode } from "html5-qrcode"
+import { useAuthStore } from '@/stores/useAuthStore';
+
+const authStore = useAuthStore();
 
 const scanComplete = ref(false)
 const result = ref('')
@@ -20,6 +23,7 @@ let html5QrCode = null
 const emit = defineEmits(['scan-success'])
 
 const initScanner = () => {
+    if (!authStore.isLoggedIn || !authStore.is_club) return;
     try {
         html5QrCode = new Html5Qrcode("qr-reader")
         const containerWidth = document.getElementById('qr-reader').offsetWidth;
