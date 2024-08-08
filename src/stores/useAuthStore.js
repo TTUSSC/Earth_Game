@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { useUserStore } from './useUsersStore';
 import { useClubsStore } from './useClubsStore';
+import { useRecordsStore } from './useRecordsStore';
 
 export const useAuthStore = defineStore('auth', {
     state: () => ({
@@ -12,8 +13,15 @@ export const useAuthStore = defineStore('auth', {
         is_club: false,
 
         token: null,
+        records: null,
     }),
     actions: {
+        async get_records() {
+            const recordsStore = useRecordsStore();
+            if (!this.isLoggedIn) return;
+            this.records = await recordsStore.query_by_user(this.email)
+            console.log("email: " + this.email, this.records)
+        },
         async user_login(email) {
             const usersStore = useUserStore();
             const user = await usersStore.get_user_by_email(email);
@@ -54,6 +62,7 @@ export const useAuthStore = defineStore('auth', {
         logout() {
             this.token = null;
             this.is_club = false;
+            this.records = null;
 
             this.name = null;
             this.nick_name = null;

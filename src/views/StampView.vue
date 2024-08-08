@@ -24,15 +24,6 @@ let account_locked = ref(false);
 let btn_class = ref("btn btn-primary");
 let btn_text = ref("登入");
 
-if (authStore.isLoggedIn) {
-  account.value = authStore.email;
-  if (!account_locked.value) {
-    account_locked.value = true;
-    btn_class.value = "btn btn-danger";
-    btn_text.value = "登出"
-  }
-}
-
 const lock = async () => {
   console.log('lock btn pushed.');
   account_locked.value = !account_locked.value;
@@ -57,24 +48,24 @@ const lock = async () => {
     } else {
       isError.value = false;
       pageMsg.value = ""
-      await get_record();
+      await authStore.get_records();
     }
   } else {
     authStore.logout();
   }
-
-}
-
-const records = ref([]);
-const get_record = async () => {
-  if (!authStore.isLoggedIn) return;
-  records.value = await recordsStore.query_by_user(authStore.email)
-  console.log("email: " + authStore.email, records)
 }
 
 const tabContent = ref(null);
 
 onMounted(() => {
+  if (authStore.isLoggedIn) {
+    account.value = authStore.email;
+    if (!account_locked.value) {
+      account_locked.value = true;
+      btn_class.value = "btn btn-danger";
+      btn_text.value = "登出"
+    }
+  }
   // 在元件掛載後計算剩餘空間
   calculateRemainingHeight();
   window.addEventListener('resize', calculateRemainingHeight);
@@ -145,9 +136,9 @@ const calculateRemainingHeight = () => {
       </div>
       <div class="tab-pane fade" id="card-tab-pane" role="tabpanel" aria-labelledby="card-tab" tabindex="0"
         ref="tabContent">
-        <div class="mb-2">總點數：{{ records.length }}</div>
+        <div class="mb-2">總點數：{{ authStore.records.length }}</div>
         <div class="overflow-auto">
-          <div class="card my-2" v-for="i in records" :key="i.created_time">
+          <div class="card my-2" v-for="i in authStore.records" :key="i.created_time">
             <div class=" card-body">
               社團攤位：{{ i.club_name }}<br>
               蓋章時間：{{ i.created_time }}
