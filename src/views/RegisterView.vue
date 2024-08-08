@@ -86,7 +86,7 @@ const validateField = (field, value, rules) => {
 
 // 表單驗證
 const nameError = computed(() => validateField('name', name.value, { required: true }));
-const nickNameError = computed(() => validateField('nick_name', nick_name.value, { required: true }));
+const nickNameError = computed(() => validateField('nick_name', nick_name.value, { required: false }));
 const emailError = computed(() => validateField('email', email.value, { required: true, pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/ }));
 const phoneError = computed(() => validateField('phone', phone.value, { required: true, pattern: /^\d{10}$/ }));
 //const passwordError = computed(() => validateField('password', password.value, { required: true, minLength: 6 }));
