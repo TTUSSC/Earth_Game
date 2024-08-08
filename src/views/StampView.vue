@@ -49,7 +49,7 @@ const lock = async () => {
     btn_class.value = "btn btn-danger";
     btn_text.value = "解鎖"
   } else {
-    authStore.token = null;
+    authStore.logout();
     btn_class.value = "btn btn-primary";
     btn_text.value = "鎖定"
   }

@@ -52,7 +52,13 @@ export const useAuthStore = defineStore('auth', {
             }
         },
         logout() {
+            this.token = null;
+            this.is_club = false;
 
+            this.name = null;
+            this.nick_name = null;
+            this.email = null;
+            this.phone = null;
         }
     },
     getters: {
