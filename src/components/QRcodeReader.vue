@@ -47,7 +47,7 @@ const initScanner = () => {
         console.log('init scanner failed: ' + error);
         btn_class.value = 'btn btn-primary';
         btn_text.value = '開啟相機';
-        camera_is_opened.value = !camera_is_opened.value;
+        camera_is_opened.value = false;
     }
 }
 
@@ -55,11 +55,12 @@ const onScanSuccess = (decodedText) => {
     result.value = decodedText
     // 可以在這裡處理掃描成功後的邏輯
     emit('scan-success', decodedText);
+    stopScanner();
 }
 
 const onScanFailure = (error) => {
     // 處理掃描失敗的情況
-    //console.warn(`QR Code scanning failed: ${error}`);
+    console.warn(`QR Code scanning failed: ${error}`);
 }
 
 onMounted(() => {
@@ -75,9 +76,12 @@ const stopScanner = async () => {
         try {
             await html5QrCode.stop()
         } catch (error) {
-            console.error("Failed to stop scanner:", error)
+            console.error("Failed to stop scanner:", error);
         }
     }
+    btn_class.value = 'btn btn-primary';
+    btn_text.value = '開啟相機';
+    camera_is_opened.value = false;
 }
 
 const camera_is_opened = ref(false);
