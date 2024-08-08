@@ -49,25 +49,29 @@ const lock = async () => {
     btn_class.value = "btn btn-danger";
     btn_text.value = "解鎖"
   } else {
-    authStore.logout();
     btn_class.value = "btn btn-primary";
     btn_text.value = "鎖定"
   }
 
-  await authStore.user_login(account.value);
+  if (account_locked.value) {
+    await authStore.user_login(account.value);
 
-  if (!authStore.isLoggedIn) {
-    isError.value = true;
-    pageMsg.value = "找不到與電子郵件相符的帳號。尚未註冊帳號則點擊選單註冊帳號。"
+    if (!authStore.isLoggedIn) {
+      isError.value = true;
+      pageMsg.value = "找不到與電子郵件相符的帳號。尚未註冊帳號則點擊選單註冊帳號。"
 
-    account_locked.value = false;
-    btn_class.value = "btn btn-primary";
-    btn_text.value = "鎖定"
+      account_locked.value = false;
+      btn_class.value = "btn btn-primary";
+      btn_text.value = "鎖定"
+    } else {
+      isError.value = false;
+      pageMsg.value = ""
+      await get_record();
+    }
   } else {
-    isError.value = false;
-    pageMsg.value = ""
-    await get_record();
+    authStore.logout();
   }
+
 }
 
 
