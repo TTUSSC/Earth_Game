@@ -21,7 +21,7 @@ const authStore = useAuthStore();
           <li class="nav-item">
             <RouterLink to="/" class="nav-link">首頁</RouterLink>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" v-if="!authStore.is_club">
             <RouterLink to="/stamp" class="nav-link">蓋章</RouterLink>
           </li>
           <li class="nav-item">
