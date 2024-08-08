@@ -25,9 +25,6 @@ const authStore = useAuthStore();
             <RouterLink to="/stamp" class="nav-link">蓋章</RouterLink>
           </li>
           <li class="nav-item">
-            <RouterLink to="/rank" class="nav-link">排行榜</RouterLink>
-          </li>
-          <li class="nav-item">
             <RouterLink to="/partner" class="nav-link">合作夥伴</RouterLink>
           </li>
           <li class="nav-item" v-if="!authStore.isLoggedIn">
