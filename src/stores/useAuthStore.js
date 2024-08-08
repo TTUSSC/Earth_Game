@@ -59,6 +59,7 @@ export const useAuthStore = defineStore('auth', {
             this.nick_name = null;
             this.email = null;
             this.phone = null;
+            console.log('logout successed :p');
         }
     },
     getters: {

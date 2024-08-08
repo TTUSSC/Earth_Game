@@ -1,7 +1,6 @@
 <script setup>
 import createQRcode from '@/components/createQRcode.vue'
-import { ref, computed } from 'vue'
-import { sha256 } from '@/assets/sha256'
+import { ref, onMounted } from 'vue'
 import { useUserStore } from '@/stores/useUsersStore';
 import { useAuthStore } from '@/stores/useAuthStore';
 import { useRecordsStore } from '@/stores/useRecordsStore';
@@ -21,24 +20,16 @@ const isError = ref(false);
 
 const account = ref('');
 
-const hashed_account = computed(() => {
-  let plain = account.value.trim()
-  if (plain == '') {
-    return ''
-  }
-  return sha256(plain)
-})
-
 let account_locked = ref(false);
 let btn_class = ref("btn btn-primary");
-let btn_text = ref("鎖定");
+let btn_text = ref("登入");
 
 if (authStore.isLoggedIn) {
   account.value = authStore.email;
   if (!account_locked.value) {
     account_locked.value = true;
     btn_class.value = "btn btn-danger";
-    btn_text.value = "解鎖"
+    btn_text.value = "登出"
   }
 }
 
@@ -47,10 +38,10 @@ const lock = async () => {
   account_locked.value = !account_locked.value;
   if (account_locked.value) {
     btn_class.value = "btn btn-danger";
-    btn_text.value = "解鎖"
+    btn_text.value = "登出"
   } else {
     btn_class.value = "btn btn-primary";
-    btn_text.value = "鎖定"
+    btn_text.value = "登入"
   }
 
   if (account_locked.value) {
@@ -62,7 +53,7 @@ const lock = async () => {
 
       account_locked.value = false;
       btn_class.value = "btn btn-primary";
-      btn_text.value = "鎖定"
+      btn_text.value = "登入"
     } else {
       isError.value = false;
       pageMsg.value = ""
@@ -74,12 +65,32 @@ const lock = async () => {
 
 }
 
-
 const records = ref([]);
 const get_record = async () => {
+  if (!authStore.isLoggedIn) return;
   records.value = await recordsStore.query_by_user(authStore.email)
   console.log("email: " + authStore.email, records)
 }
+
+const tabContent = ref(null);
+
+onMounted(() => {
+  // 在元件掛載後計算剩餘空間
+  calculateRemainingHeight();
+  window.addEventListener('resize', calculateRemainingHeight);
+});
+
+const calculateRemainingHeight = () => {
+  if (tabContent.value) {
+    // 計算容器離窗口底部的距離
+    const tabContentRect = tabContent.value.getBoundingClientRect();
+    const windowHeight = window.innerHeight;
+    const remainingHeight = windowHeight - tabContentRect.top - 16; // 16 像素的 margin
+
+    // 設定 max-height
+    tabContent.value.style.maxHeight = `${remainingHeight} px`;
+  }
+};
 </script>
 <template>
   <div>
@@ -89,14 +100,9 @@ const get_record = async () => {
       role="alert">
       {{ pageMsg }}
     </div>
+
     <!-- 表單 -->
     <div class="row align-items-center needs-validation my-3">
-      <!--
-      <div class="col-12 mb-3">
-        <strong>雜湊值為：</strong>
-        <div class="text-break">{{ hashed_account }}</div>
-      </div>
-      -->
       <div class="col mb-3">
         <input type="text" class="form-control" id="account" v-model="account" placeholder="輸入 Email" required
           :disabled="account_locked" />
@@ -107,7 +113,9 @@ const get_record = async () => {
         <button type="submit" class="btn" :class="btn_class" @click="lock">{{ btn_text }}</button>
       </div>
     </div>
+    <!-- 表單結束 -->
 
+    <!-- tab 按鈕 -->
     <ul class="nav nav-tabs mb-2" id="myTab" role="tablist">
       <li class="nav-item" role="presentation">
         <button class="nav-link active" id="qrcode-tab" data-bs-toggle="tab" data-bs-target="#qrcode-tab-pane"
@@ -128,14 +136,17 @@ const get_record = async () => {
         </button>
       </li>
     </ul>
-    <div class="tab-content" id="myTabContent">
+
+    <!-- tab 登入顯示內容 -->
+    <div class="tab-content" id="myTabContent" v-if="authStore.isLoggedIn">
       <div class="tab-pane fade show active" id="qrcode-tab-pane" role="tabpanel" aria-labelledby="qrcode-tab"
         tabindex="0">
-        <createQRcode :url="account.trim()" v-if="hashed_account != '' && authStore.isLoggedIn" />
+        <createQRcode :url="account.trim()" />
       </div>
-      <div class="tab-pane fade" id="card-tab-pane" role="tabpanel" aria-labelledby="card-tab" tabindex="0">
+      <div class="tab-pane fade" id="card-tab-pane" role="tabpanel" aria-labelledby="card-tab" tabindex="0"
+        ref="tabContent">
         <div class="mb-2">總點數：{{ records.length }}</div>
-        <div class="overflow-auto" style="max-height: 400px;">
+        <div class="overflow-auto">
           <div class="card my-2" v-for="i in records" :key="i.created_time">
             <div class=" card-body">
               社團攤位：{{ i.club_name }}<br>
@@ -145,23 +156,24 @@ const get_record = async () => {
         </div>
       </div>
       <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
-        <div v-if="authStore.isLoggedIn">
-
-          <div class="card">
-            <!-- <div class="card-header">
-              Featured
-            </div> -->
-            <div class="card-body">
-              <p class="card-text">
-                <span>姓名: {{ authStore.name }}</span><br>
-                <span>暱稱: {{ authStore.nick_name }}</span><br>
-                <span>電子信箱: {{ authStore.email }}</span><br>
-                <span>電話號碼: {{ authStore.phone }}</span>
-              </p>
-            </div>
+        <div class="card">
+          <div class="card-body">
+            <p class="card-text">
+              <span>姓名: {{ authStore.name }}</span><br>
+              <span>暱稱: {{ authStore.nick_name }}</span><br>
+              <span>電子信箱: {{ authStore.email }}</span><br>
+              <span>電話號碼: {{ authStore.phone }}</span>
+            </p>
           </div>
         </div>
       </div>
     </div>
+    <!-- tab 登入顯示內容結束 -->
+
+    <!-- tab 未登入顯示內容 -->
+    <div class="tab-content" id="myTabContent" v-else>
+      <span>登入顯示更多內容喔</span>
+    </div>
+    <!-- tab 未登入顯示內容結束 -->
   </div>
 </template>
