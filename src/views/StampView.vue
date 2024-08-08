@@ -76,14 +76,6 @@ const get_record = async () => {
   records.value = await recordsStore.query_by_user(authStore.email)
   console.log("email: " + authStore.email, records)
 }
-
-const clubNames = computed(() => {
-  return records.value.reduce((acc, record) => {
-    const clubInfo = clubsStore.get_club_by_email(record.club_email);
-    acc[record.club_email] = clubInfo ? clubInfo.name : '未知社團';
-    return acc;
-  }, {});
-});
 </script>
 <template>
   <div>
