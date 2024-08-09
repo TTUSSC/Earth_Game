@@ -1,8 +1,6 @@
 # Earth_Game
 
-社博大地遊戲網頁
-
-This template should help get you started developing with Vue 3 in Vite.
+社博大地遊戲網頁 aka 丐版 OPass。
 
 ## Recommended IDE Setup
 
@@ -35,3 +33,9 @@ npm run build
 ```sh
 npm run lint
 ```
+
+## Contributor
+
+<a href="https://github.com/TTUSSC/Earth_Game/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=TTUSSC/Earth_Game" />
+</a>
