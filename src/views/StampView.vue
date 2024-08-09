@@ -56,6 +56,7 @@ const lock = async () => {
 }
 
 const tabContent = ref(null);
+const remainingHeight = ref(0);
 
 onMounted(() => {
   if (authStore.isLoggedIn) {
@@ -73,13 +74,10 @@ onMounted(() => {
 
 const calculateRemainingHeight = () => {
   if (tabContent.value) {
-    // 計算容器離窗口底部的距離
     const tabContentRect = tabContent.value.getBoundingClientRect();
     const windowHeight = window.innerHeight;
-    const remainingHeight = windowHeight - tabContentRect.top - 16; // 16 像素的 margin
-
-    // 設定 max-height
-    tabContent.value.style.maxHeight = `${remainingHeight} px`;
+    remainingHeight.value = windowHeight - tabContentRect.top - 80;
+    console.log("剩餘高度：", remainingHeight.value);
   }
 };
 </script>
@@ -134,10 +132,11 @@ const calculateRemainingHeight = () => {
         tabindex="0">
         <createQRcode :url="account.trim()" />
       </div>
-      <div class="tab-pane fade" id="card-tab-pane" role="tabpanel" aria-labelledby="card-tab" tabindex="0"
-        ref="tabContent">
+      <div class="tab-pane fade" id="card-tab-pane" role="tabpanel" aria-labelledby="card-tab" tabindex="0">
         <div class="mb-2">總點數：{{ authStore.records.length }}</div>
-        <div class="overflow-auto">
+        <div class="overflow-auto" :style="{
+          maxHeight: remainingHeight + `px`
+        }">
           <div class="card my-2" v-for="i in authStore.records" :key="i.created_time">
             <div class=" card-body">
               社團攤位：{{ i.club_name }}<br>
@@ -162,7 +161,7 @@ const calculateRemainingHeight = () => {
     <!-- tab 登入顯示內容結束 -->
 
     <!-- tab 未登入顯示內容 -->
-    <div class="tab-content" id="myTabContent" v-else>
+    <div class="tab-content" id="myTabContent" ref="tabContent" v-else>
       <span>登入顯示更多內容喔</span>
     </div>
     <!-- tab 未登入顯示內容結束 -->
