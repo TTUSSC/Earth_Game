@@ -39,3 +39,5 @@ npm run lint
 <a href="https://github.com/TTUSSC/Earth_Game/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=TTUSSC/Earth_Game" />
 </a>
+
+![Alt](https://repobeats.axiom.co/api/embed/7371fd860acbd55dcd1b042bccd2a16153458508.svg "Repobeats analytics image")
