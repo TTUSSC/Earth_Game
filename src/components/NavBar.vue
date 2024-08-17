@@ -40,7 +40,7 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue';
+import { ref, watch, onMounted, nextTick } from 'vue';
 import { useAuthStore } from '@/stores/useAuthStore';
 import { useRouter, useRoute } from 'vue-router';
 
@@ -48,19 +48,43 @@ const authStore = useAuthStore();
 const router = useRouter();
 const route = useRoute();
 const isNavExpanded = ref(false);
+const navbarCollapse = ref(null);
+const navHeight = ref('0px');
 
 function toggleNav() {
   isNavExpanded.value = !isNavExpanded.value;
+  if (isNavExpanded.value) {
+    nextTick(() => {
+      updateNavHeight();
+    });
+  }
 }
 
 function navigateTo(path) {
   router.push(path);
-  isNavExpanded.value = false; // 縮回 navbar
+  isNavExpanded.value = false;
+}
+
+function updateNavHeight() {
+  if (navbarCollapse.value) {
+    navHeight.value = `${navbarCollapse.value.scrollHeight}px`;
+  }
 }
 
 // 當路由變化時關閉 navbar
 watch(() => route.path, () => {
   isNavExpanded.value = false;
+});
+
+// 監聽窗口大小變化
+window.addEventListener('resize', () => {
+  if (isNavExpanded.value) {
+    updateNavHeight();
+  }
+});
+
+onMounted(() => {
+  navbarCollapse.value = document.getElementById('navbarCollapse');
 });
 </script>
 
@@ -68,13 +92,17 @@ watch(() => route.path, () => {
 .expand-enter-active,
 .expand-leave-active {
   transition: height 0.3s ease;
-  height: 200px;
   overflow: hidden;
 }
 
 .expand-enter-from,
 .expand-leave-to {
-  height: 0;
+  height: 0 !important;
+}
+
+.expand-enter-to,
+.expand-leave-from {
+  height: v-bind(navHeight);
 }
 
 /* 確保在大屏幕上 navbar 始終可見 */
