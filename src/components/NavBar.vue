@@ -1,63 +1,116 @@
-<script setup>
-import { ref } from 'vue';
-import { useAuthStore } from '@/stores/useAuthStore';
-import { useRouter } from 'vue-router';
-const authStore = useAuthStore();
-const router = useRouter();
-const isNavExpanded = ref(false);
-
-function toggleNav() {
-  isNavExpanded.value = !isNavExpanded.value;
-  if (!isNavExpanded.value) {
-    document.getElementById('navbarCollapse').classList.add('show');
-    console.log("show");
-  } else {
-    document.getElementById('navbarCollapse').classList.remove('show');
-  }
-}
-
-function navigateTo(path) {
-  router.push(path);
-  toggleNav(); // 縮回 navbar
-}
-</script>
-
 <template>
   <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-danger">
     <div class="container-fluid">
       <RouterLink to="/" class="navbar-brand">
-        <img src="/SSC_logo.png" height="32px" />
+        <img src="/SSC_logo.png" height="32px" alt="Logo" />
         <span>社團博覽會大地遊戲</span>
       </RouterLink>
 
-      <button class="navbar-toggler" @click="toggleNav()" type="button" data-bs-toggle="collapse"
-        data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false"
-        aria-label="Toggle navigation">
+      <button class="navbar-toggler" @click="toggleNav()" type="button" aria-controls="navbarCollapse"
+        aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
 
-      <div class="collapse navbar-collapse" id="navbarCollapse">
-        <ul class="navbar-nav me-auto mb-2 mb-md-0">
-          <li class="nav-item">
-            <button @click="navigateTo('/')" class="nav-link">首頁</button>
-          </li>
-          <li class="nav-item" v-if="!authStore.is_club">
-            <button @click="navigateTo('/stamp')" class="nav-link">蓋章</button>
-          </li>
-          <li class="nav-item">
-            <button @click="navigateTo('/partner')" class="nav-link">合作夥伴</button>
-          </li>
-          <li class="nav-item" v-if="!authStore.isLoggedIn">
-            <button @click="navigateTo('/register')" class="nav-link">註冊</button>
-          </li>
-          <li class="nav-item" v-if="!authStore.isLoggedIn">
-            <button @click="navigateTo('/club')" class="nav-link">我是社團</button>
-          </li>
-          <li class="nav-item" v-if="authStore.is_club">
-            <button @click="navigateTo('/scan')" class="nav-link">掃描新生</button>
-          </li>
-        </ul>
-      </div>
+      <transition name="expand">
+        <div v-show="isNavExpanded" class="navbar-collapse" id="navbarCollapse">
+          <ul class="navbar-nav me-auto mb-2 mb-md-0">
+            <li class="nav-item">
+              <button @click="navigateTo('/')" class="nav-link">首頁</button>
+            </li>
+            <li class="nav-item" v-if="!authStore.is_club">
+              <button @click="navigateTo('/stamp')" class="nav-link">蓋章</button>
+            </li>
+            <li class="nav-item">
+              <button @click="navigateTo('/partner')" class="nav-link">合作夥伴</button>
+            </li>
+            <li class="nav-item" v-if="!authStore.isLoggedIn">
+              <button @click="navigateTo('/register')" class="nav-link">註冊</button>
+            </li>
+            <li class="nav-item" v-if="!authStore.isLoggedIn">
+              <button @click="navigateTo('/club')" class="nav-link">我是社團</button>
+            </li>
+            <li class="nav-item" v-if="authStore.is_club">
+              <button @click="navigateTo('/scan')" class="nav-link">掃描新生</button>
+            </li>
+          </ul>
+        </div>
+      </transition>
     </div>
   </nav>
 </template>
+
+<script setup>
+import { ref, watch } from 'vue';
+import { useAuthStore } from '@/stores/useAuthStore';
+import { useRouter, useRoute } from 'vue-router';
+
+const authStore = useAuthStore();
+const router = useRouter();
+const route = useRoute();
+const isNavExpanded = ref(false);
+
+function toggleNav() {
+  isNavExpanded.value = !isNavExpanded.value;
+}
+
+function navigateTo(path) {
+  router.push(path);
+  isNavExpanded.value = false; // 縮回 navbar
+}
+
+// 當路由變化時關閉 navbar
+watch(() => route.path, () => {
+  isNavExpanded.value = false;
+});
+</script>
+
+<style scoped>
+.expand-enter-active,
+.expand-leave-active {
+  transition: height 0.3s ease;
+  height: 200px;
+  overflow: hidden;
+}
+
+.expand-enter-from,
+.expand-leave-to {
+  height: 0;
+}
+
+/* 確保在大屏幕上 navbar 始終可見 */
+@media (min-width: 768px) {
+  .navbar-collapse {
+    display: block !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+}
+
+/* 在小屏幕上應用過渡效果 */
+@media (max-width: 767.98px) {
+  .navbar-collapse {
+    flex-basis: 100%;
+    flex-grow: 1;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: #dc3545;
+    /* 使用與 navbar 相同的背景色 */
+    --bs-gutter-x: 1.5rem;
+    --bs-gutter-y: 0;
+  }
+
+  .navbar-nav .nav-link {
+    display: flex;
+    text-align: left;
+    width: 100%;
+    padding-left: calc(var(--bs-gutter-x) * .5);
+  }
+
+  .nav-link {
+    padding: var(--bs-nav-link-padding-y) var(--bs-nav-link-padding-x);
+  }
+}
+</style>
