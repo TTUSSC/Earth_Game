@@ -80,6 +80,16 @@ const calculateRemainingHeight = () => {
     console.log("剩餘高度：", remainingHeight.value);
   }
 };
+
+const time_formatter = new Intl.DateTimeFormat('zh-TW', {
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+  hour: '2-digit',
+  minute: '2-digit',
+  second: '2-digit',
+  hour12: false
+});
 </script>
 <template>
   <div>
@@ -145,9 +155,12 @@ const calculateRemainingHeight = () => {
             maxHeight: remainingHeight + `px`
           }">
             <div class="card my-2" v-for="i in authStore.records" :key="i.created_time">
-              <div class=" card-body">
-                社團攤位：{{ i.club_name }}<br>
-                蓋章時間：{{ i.created_time }}
+              <div class="card-header">
+                <strong>{{ i.club_name }}</strong>
+              </div>
+              <div class="card-body">
+                <p v-if="i.club_stamp != ''">{{ i.club_stamp }}</p>
+                蓋章時間：{{ time_formatter.format(new Date(i.created_time)) }}
               </div>
             </div>
           </div>

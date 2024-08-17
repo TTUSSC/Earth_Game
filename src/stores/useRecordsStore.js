@@ -45,9 +45,11 @@ export const useRecordsStore = defineStore('records', {
                     club.value = await clubsStore.get_club_by_email(this.data[i]['club_email']);
                     //let user_name = "";
                     let club_name = club.value.name;
+                    let club_stamp = club.value.text_on_stamp;
                     list.push({
                         user_email: this.data[i]['user_email'],
                         club_name: club_name,
+                        club_stamp: club_stamp,
                         club_email: this.data[i]['club_email'],
                         created_time: this.data[i]['created_time'],
                     });
