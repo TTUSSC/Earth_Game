@@ -126,27 +126,38 @@ const calculateRemainingHeight = () => {
       </li>
     </ul>
 
-    <!-- tab 登入顯示內容 -->
-    <div class="tab-content" id="myTabContent" v-if="authStore.isLoggedIn">
+    <div class="tab-content" id="myTabContent" ref="tabContent">
       <div class="tab-pane fade show active" id="qrcode-tab-pane" role="tabpanel" aria-labelledby="qrcode-tab"
         tabindex="0">
-        <createQRcode :url="account.trim()" />
-      </div>
-      <div class="tab-pane fade" id="card-tab-pane" role="tabpanel" aria-labelledby="card-tab" tabindex="0">
-        <div class="mb-2">總點數：{{ authStore.records.length }}</div>
-        <div class="overflow-auto" :style="{
+        <div v-if="authStore.isLoggedIn" class="mx-auto" :style="{
           maxHeight: remainingHeight + `px`
         }">
-          <div class="card my-2" v-for="i in authStore.records" :key="i.created_time">
-            <div class=" card-body">
-              社團攤位：{{ i.club_name }}<br>
-              蓋章時間：{{ i.created_time }}
+          <createQRcode :url="account.trim()" />
+        </div>
+        <div v-else>
+          沒登入不能掃描 QR code 喔
+        </div>
+      </div>
+      <div class=" tab-pane fade" id="card-tab-pane" role="tabpanel" aria-labelledby="card-tab" tabindex="0">
+        <div v-if="authStore.isLoggedIn">
+          <div class="mb-2">總點數：{{ authStore.records.length }}</div>
+          <div class="overflow-auto" :style="{
+            maxHeight: remainingHeight + `px`
+          }">
+            <div class="card my-2" v-for="i in authStore.records" :key="i.created_time">
+              <div class=" card-body">
+                社團攤位：{{ i.club_name }}<br>
+                蓋章時間：{{ i.created_time }}
+              </div>
             </div>
           </div>
         </div>
+        <div v-else>
+          這是一張空的集點卡呢
+        </div>
       </div>
       <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
-        <div class="card">
+        <div class="card" v-if="authStore.isLoggedIn">
           <div class="card-body">
             <p class="card-text">
               <span>姓名: {{ authStore.name }}</span><br>
@@ -156,14 +167,11 @@ const calculateRemainingHeight = () => {
             </p>
           </div>
         </div>
+
+        <div v-else>
+          這裡什麼都沒有喔 (ゝ∀･)
+        </div>
       </div>
     </div>
-    <!-- tab 登入顯示內容結束 -->
-
-    <!-- tab 未登入顯示內容 -->
-    <div class="tab-content" id="myTabContent" ref="tabContent" v-else>
-      <span>登入顯示更多內容喔</span>
-    </div>
-    <!-- tab 未登入顯示內容結束 -->
   </div>
 </template>
