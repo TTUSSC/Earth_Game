@@ -1,6 +1,9 @@
 <script setup>
 import { ref, computed } from 'vue';
 import axios from 'axios';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 let name = ref("");
 let nick_name = ref("");
@@ -23,9 +26,10 @@ const errors = ref({
     check: ''
 });
 
-var formClass = ref("row g-3 my-3 needs-validation");
+var was_validated = ref(false);
 
 const sendForm = async () => {
+    was_validated.value = true;
     isLoading.value = true;
     try {
         const isValid = await validForm();
@@ -45,6 +49,9 @@ const sendForm = async () => {
             isError.value = false;
             registrationMessage.value = "註冊成功！";
             clearForm();
+            router.push({
+                name: 'stamp'
+            });
         } else {
             console.log("驗證失敗或未勾選同意條款")
         }
@@ -80,7 +87,6 @@ const validateField = (field, value, rules) => {
         return false;
     }
     errors.value[field] = '';
-    formClass.value = "row g-3 my-3 needs-validation was-validated"
     return true;
 };
 
@@ -106,7 +112,6 @@ async function validForm() {
 
     // 欄位驗證
     if (!isFormValid.value) {
-        formClass.value = "row g-3 my-3 needs-validation was-validated"
         return false;
     }
 
@@ -127,6 +132,7 @@ async function validForm() {
                 console.log("data conflict.");
                 isError.value = true;
                 registrationMessage.value = "電子信箱或電話號碼已經被註冊過了。";
+                was_validated.value = false;
                 return false; // 衝突，不通過
             }
         }
@@ -157,7 +163,8 @@ const clearForm = () => {
             role="alert">
             {{ registrationMessage }}
         </div>
-        <form :class="formClass" @submit.prevent="sendForm" novalidate>
+        <form class="row g-3 my-3 needs-validation" :class="{ 'was-validated': was_validated }"
+            @submit.prevent="sendForm" novalidate>
             <div class="col-md-6">
                 <input type="text" v-model="name" class="form-control" :class="{ 'is-invalid': !nameError }" name="name"
                     id="name" placeholder="姓名" required>
