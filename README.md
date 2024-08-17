@@ -40,4 +40,5 @@ npm run lint
   <img src="https://contrib.rocks/image?repo=TTUSSC/Earth_Game" />
 </a>
 
+### Status board
 ![Alt](https://repobeats.axiom.co/api/embed/7371fd860acbd55dcd1b042bccd2a16153458508.svg "Repobeats analytics image")
