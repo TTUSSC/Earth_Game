@@ -101,7 +101,7 @@ const time_formatter = new Intl.DateTimeFormat('zh-TW', {
     </div>
 
     <!-- 表單 -->
-    <div class="row align-items-center needs-validation my-3">
+    <form class="row align-items-center needs-validation my-3" @submit.prevent="lock">
       <div class="col mb-3">
         <input type="text" class="form-control" id="account" v-model="account" placeholder="輸入 Email" required
           :disabled="account_locked" />
@@ -109,9 +109,9 @@ const time_formatter = new Intl.DateTimeFormat('zh-TW', {
         <div class="invalid-feedback">Looks bad!</div>
       </div>
       <div class="col-3 mb-3">
-        <button type="submit" class="btn" :class="btn_class" @click="lock">{{ btn_text }}</button>
+        <button type="submit" class="btn" :class="btn_class">{{ btn_text }}</button>
       </div>
-    </div>
+    </form>
     <!-- 表單結束 -->
 
     <!-- tab 按鈕 -->
