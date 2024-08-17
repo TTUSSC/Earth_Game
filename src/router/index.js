@@ -31,10 +31,12 @@ const router = createRouter({
     },
     {
       path: '/partner',
+      name: 'partner',
       component: Partner
     },
     {
       path: '/register',
+      name: 'register',
       component: RegisterView
     },
     {
