@@ -85,8 +85,10 @@ export default {
   </header>
 
   <main class="flex-shrink-0">
-    <div class="container" style="padding-top: 60px">
-      <RouterView class="mt-3 mb-3" />
+    <div class="container" style="margin-top: 60px">
+      <transition name="route" mode="out-in">
+        <router-view class="pt-3"></router-view>
+      </transition>
     </div>
   </main>
 
@@ -98,6 +100,16 @@ export default {
 </template>
 
 <style>
+.route-enter-from,
+.route-leave-to {
+  opacity: 0;
+}
+
+.route-enter-active,
+.route-leave-active {
+  transition: opacity 0.5s ease;
+}
+
 .bd-placeholder-img {
   font-size: 1.125rem;
   text-anchor: middle;
@@ -165,7 +177,7 @@ export default {
   --bs-btn-hover-border-color: #6528e0;
   --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
   --bs-btn-active-color: var(--bs-btn-hover-color);
-  --bs-btn-active-bg:#5a23c8;
+  --bs-btn-active-bg: #5a23c8;
   --bs-btn-active-border-color: #5a23c8;
 }
 
