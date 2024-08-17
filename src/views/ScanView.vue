@@ -1,10 +1,12 @@
 <script setup>
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 import QRcodeReader from '@/components/QRcodeReader.vue';
 import { useAuthStore } from '@/stores/useAuthStore';
 import { useClubsStore } from '@/stores/useClubsStore';
 import { useUserStore } from '@/stores/useUsersStore';
 import { useRecordsStore } from '@/stores/useRecordsStore';
+import { onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 
 const usersStore = useUserStore();
 const clubsStore = useClubsStore();
@@ -14,11 +16,20 @@ clubsStore.callAPI();
 usersStore.callAPI();
 recordsStore.callAPI();
 
+const router = useRouter();
+
+// check login inro
+onMounted(() => {
+    if (!authStore.isLoggedIn || !authStore.is_club) router.push({ name: 'club' });
+})
+
+const isLoading = ref(false);
 const waiting = ref(false);
 
 const sendStamp = async () => {
     isLoading.value = true;
     if (await recordExist(authStore.email, scanEmail.value)) {
+        isLoading.value = false;
         return;
     }
     try {
@@ -26,11 +37,12 @@ const sendStamp = async () => {
         formData.append("entry.1180634340", authStore.email);
         formData.append("entry.1788223982", scanEmail.value);
 
-        await fetch('https://docs.google.com/forms/u/2/d/e/1FAIpQLScMibiJl3amUlq6x91EwApaW7XqnRTl51ZQagvWz3vNftR3tw/formResponse', {
-            method: 'POST',
-            mode: 'no-cors',
-            body: formData
-        });
+        await
+            fetch('https://docs.google.com/forms/u/2/d/e/1FAIpQLScMibiJl3amUlq6x91EwApaW7XqnRTl51ZQagvWz3vNftR3tw/formResponse', {
+                method: 'POST',
+                mode: 'no-cors',
+                body: formData
+            });
         console.log('Form submitted successfully')
         isError.value = false;
         pageMsg.value = "提交 " + scanName.value + " 蓋章紀錄成功！";
@@ -45,9 +57,9 @@ const sendStamp = async () => {
 
     // 檢查有沒有上傳成功
     // if (checkSubmit()) {
-    //     console.log("submit successed!");
+    // console.log("submit successed!");
     // } else {
-    //     console.log("submit failed!");
+    // console.log("submit failed!");
     // }
 }
 
@@ -76,6 +88,7 @@ const handleScanSuccess = async (data) => {
     scanEmail.value = data;
     let user = await usersStore.get_user_by_email(data);
     console.log(user);
+
     if (user) {
         if (user['nick_name'] != "") scanName.value = user['nick_name'];
         else scanName.value = user['name'];
@@ -83,7 +96,8 @@ const handleScanSuccess = async (data) => {
         pageMsg.value = '掃描成功！' + scanName.value;
     } else {
         isError.value = true;
-        pageMsg.value = '找不到 email: ' + data + ' 的帳號。'
+        pageMsg.value = '找不到 email: ' + data + ' 的帳號。';
+        waiting.value = false;
         return;
     }
     // check stamp
@@ -95,133 +109,18 @@ const handleScanSuccess = async (data) => {
 
 const pageMsg = ref('');
 const isError = ref(false);
-
-const clubName = ref('');
-
-if (authStore.isLoggedIn && authStore.is_club) {
-    // 切換成掃描
-    clubName.value = authStore.name;
-} else {
-    // 切換成社團登入表單
-}
-
-let email = ref("");
-let password = ref("");
-
-const isLoading = ref(false);
-
-// 添加錯誤信息
-const errors = ref({
-    email: '',
-    password: ''
-});
-
-var formClass = ref("row g-3 my-3 needs-validation");
-
-const sendForm = async () => {
-    isLoading.value = true;
-    try {
-        const isValid = await validForm();
-        await authStore.club_login(email.value, password.value);
-        if (isValid && authStore.isLoggedIn && authStore.is_club) {
-            console.log('Club login successfully')
-            isError.value = false;
-            pageMsg.value = "登入成功！";
-            console.log(authStore.name, authStore.email, authStore.is_club);
-            clubName.value = authStore.name;
-            clearForm();
-        } else {
-            isError.value = true;
-            pageMsg.value = "帳號密碼錯誤";
-            console.log("帳號密碼錯誤")
-        }
-    } catch (error) {
-        isError.value = true;
-        pageMsg.value = "登入表單錯誤：" + error;
-        console.error("Error submitting form:", error);
-        // 處理錯誤，比如顯示錯誤消息
-    } finally {
-        isLoading.value = false;
-    }
-}
-
-// 驗證函數
-const validateField = (field, value, rules) => {
-    if (rules.required && !value) {
-        errors.value[field] = '此欄位為必填';
-        return false;
-    }
-    if (rules.minLength && value.length < rules.minLength) {
-        errors.value[field] = `最少需要 ${rules.minLength} 個字符`;
-        return false;
-    }
-    if (rules.pattern && !rules.pattern.test(value)) {
-        errors.value[field] = '格式不正確';
-        return false;
-    }
-    errors.value[field] = '';
-    formClass.value = "row g-3 my-3 needs-validation was-validated"
-    return true;
-};
-
-// 表單驗證
-const emailError = computed(() => validateField('email', email.value, { required: true, pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/ }));
-const passwordError = computed(() => validateField('password', password.value, { required: true, minLength: 6 }));
-
-// 檢查整個表單是否有效
-const isFormValid = computed(() => {
-    return emailError.value && passwordError.value
-});
-
-async function validForm() {
-    // 欄位驗證
-    if (!isFormValid.value) {
-        formClass.value = "row g-3 my-3 needs-validation was-validated"
-        return false;
-    }
-    return true;
-}
-
-// 清空表單的函數
-const clearForm = () => {
-    email.value = "";
-    password.value = "";
-};
 </script>
-<template>
-    <div v-if="authStore.isLoggedIn && authStore.is_club">
-        <h1 class="mb-4">{{ clubName }}：掃描</h1>
-        <div v-if="pageMsg" class="mt-3 text-break" :class="['alert', isError ? 'alert-danger' : 'alert-success']"
-            role="alert">
-            {{ pageMsg }}
-        </div>
-        <QRcodeReader @scan-success="handleScanSuccess" />
-    </div>
-    <div v-else>
-        <h1 class="mb-4">社團登入</h1>
-        <!-- 顯示註冊結果訊息 -->
-        <div v-if="pageMsg" class="mt-3 text-break" :class="['alert', isError ? 'alert-danger' : 'alert-success']"
-            role="alert">
-            {{ pageMsg }}
-        </div>
-        <form :class="formClass" @submit.prevent="sendForm" novalidate>
-            <div class="col-md-6">
-                <input type="email" v-model="email" class="form-control" :class="{ 'is-invalid': !emailError }"
-                    name="email" id="email" placeholder="電子郵件" required>
-                <div class="invalid-feedback">{{ errors.email }}</div>
-            </div>
-            <div class="col-md-6">
-                <input type="password" v-model="password" class="form-control" :class="{ 'is-invalid': !passwordError }"
-                    name="password" id="password" placeholder="密碼" required>
-                <div class="invalid-feedback">{{ errors.password }}</div>
-            </div>
-            <div class="col-6 d-grid mx-auto">
-                <button type="submit" class="btn btn-primary" :disabled="!isFormValid || isLoading">{{ isLoading ?
-                    '提交中...' : '登入' }}</button>
-            </div>
-        </form>
 
-        <!-- Loading 覆蓋層 -->
+<template>
+    <div>
+        <div v-if="authStore.isLoggedIn && authStore.is_club">
+            <h1 class="mb-4">{{ authStore.name }}：掃描</h1>
+            <div v-if="pageMsg" class="mt-3 text-break" :class="['alert', isError ? 'alert-danger' : 'alert-success']"
+                role="alert">
+                {{ pageMsg }}
+            </div>
+            <QRcodeReader @scan-success="handleScanSuccess" />
+        </div>
         <div v-if="isLoading" class="loading-overlay">
             <div class="spinner-border text-primary" role="status">
                 <span class="visually-hidden">Loading...</span>
@@ -229,6 +128,7 @@ const clearForm = () => {
         </div>
     </div>
 </template>
+
 <style scoped>
 .loading-overlay {
     position: fixed;

@@ -76,7 +76,7 @@ const calculateRemainingHeight = () => {
   if (tabContent.value) {
     const tabContentRect = tabContent.value.getBoundingClientRect();
     const windowHeight = window.innerHeight;
-    remainingHeight.value = windowHeight - tabContentRect.top - 80;
+    remainingHeight.value = windowHeight - tabContentRect.top - 110;
     console.log("剩餘高度：", remainingHeight.value);
   }
 };

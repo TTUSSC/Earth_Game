@@ -50,8 +50,11 @@ function navigateTo(path) {
           <li class="nav-item" v-if="!authStore.isLoggedIn">
             <button @click="navigateTo('/register')" class="nav-link">註冊</button>
           </li>
-          <li class="nav-item" v-if="!authStore.isLoggedIn || authStore.is_club">
-            <button @click="navigateTo('/scan')" class="nav-link">我是社團</button>
+          <li class="nav-item" v-if="!authStore.isLoggedIn">
+            <button @click="navigateTo('/club')" class="nav-link">我是社團</button>
+          </li>
+          <li class="nav-item" v-if="authStore.is_club">
+            <button @click="navigateTo('/scan')" class="nav-link">掃描新生</button>
           </li>
         </ul>
       </div>
