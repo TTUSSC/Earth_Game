@@ -140,7 +140,7 @@ const calculateRemainingHeight = () => {
       </div>
       <div class=" tab-pane fade" id="card-tab-pane" role="tabpanel" aria-labelledby="card-tab" tabindex="0">
         <div v-if="authStore.isLoggedIn">
-          <div class="mb-2">總點數：{{ authStore.records.length }}</div>
+          <div class="mb-2">總點數：{{ authStore.records_len }}</div>
           <div class="overflow-auto" :style="{
             maxHeight: remainingHeight + `px`
           }">

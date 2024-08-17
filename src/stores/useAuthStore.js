@@ -73,5 +73,9 @@ export const useAuthStore = defineStore('auth', {
     },
     getters: {
         isLoggedIn: (state) => !!state.token,
+        records_len: (state) => {
+            if (state.records == null) return 0;
+            else return state.records.length;
+        }
     }
 })
