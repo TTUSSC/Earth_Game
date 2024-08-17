@@ -12,7 +12,7 @@ const router = useRouter();
       活動邀請連結
     </button> -->
     <section class="my-4">
-      <div class="card mb-2" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false"
+      <div class="card-btn card mb-2" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false"
         aria-controls="collapseExample">
         <div class="card-body">
           邀請朋友參加大地遊戲！
@@ -23,17 +23,17 @@ const router = useRouter();
           <createQRcode url="https://ttussc.github.io/Earth_Game" />
         </div>
       </div>
-      <div class="card mb-2" @click="router.push({ name: 'register' });">
+      <div class="card-btn card mb-2" @click="router.push({ name: 'register' });">
         <div class="card-body">
           第一次加入點這裡註冊帳號！
         </div>
       </div>
-      <div class="card mb-2" @click="router.push({ name: 'stamp' });">
+      <div class="card-btn card mb-2" @click="router.push({ name: 'stamp' });">
         <div class="card-body">
           什麼？想蓋章？點這裡登入去蓋章！
         </div>
       </div>
-      <div class="card mb-2" @click="router.push({ name: 'club' });">
+      <div class="card-btn card mb-2" @click="router.push({ name: 'club' });">
         <div class="card-body">
           我是社團，要走秘密通道
         </div>
@@ -41,3 +41,9 @@ const router = useRouter();
     </section>
   </div>
 </template>
+<style scoped>
+.card-btn:hover {
+  font-weight: bold;
+  cursor: pointer;
+}
+</style>
