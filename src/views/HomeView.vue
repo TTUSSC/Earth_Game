@@ -1,8 +1,10 @@
 <script setup>
 import createQRcode from '../components/createQRcode.vue'
 import { useRouter } from 'vue-router';
+import { useAuthStore } from '@/stores/useAuthStore';
 
 const router = useRouter();
+const authStore = useAuthStore();
 </script>
 <template>
   <div>
@@ -23,17 +25,18 @@ const router = useRouter();
           <createQRcode url="https://ttussc.github.io/Earth_Game" />
         </div>
       </div>
-      <div class="card-btn card mb-2" @click="router.push({ name: 'register' });">
+      <div v-show="!authStore.isLoggedIn" class="card-btn card mb-2" @click="router.push({ name: 'register' });">
         <div class="card-body">
           第一次加入點這裡註冊帳號！
         </div>
       </div>
-      <div class="card-btn card mb-2" @click="router.push({ name: 'stamp' });">
+      <div v-show="!authStore.is_club" class="card-btn card mb-2" @click="router.push({ name: 'stamp' });">
         <div class="card-body">
           什麼？想蓋章？點這裡登入去蓋章！
         </div>
       </div>
-      <div class="card-btn card mb-2" @click="router.push({ name: 'club' });">
+      <div v-show="!authStore.isLoggedIn || (authStore.isLoggedIn && authStore.is_club)" class="card-btn card mb-2"
+        @click="router.push({ name: 'club' });">
         <div class="card-body">
           我是社團，要走秘密通道
         </div>

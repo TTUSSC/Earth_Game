@@ -10,6 +10,7 @@ const usersStore = useUserStore();
 const clubsStore = useClubsStore();
 const recordsStore = useRecordsStore();
 const authStore = useAuthStore();
+const router = useRouter();
 clubsStore.callAPI();
 usersStore.callAPI();
 recordsStore.callAPI();
@@ -21,7 +22,7 @@ const clubName = ref('');
 
 if (authStore.isLoggedIn && authStore.is_club) {
     // 切換成掃描
-    clubName.value = authStore.name;
+    router.push({ name: 'scan' });
 } else {
     // 切換成社團登入表單
 }
@@ -39,7 +40,6 @@ const errors = ref({
 
 var formClass = ref("row g-3 my-3 needs-validation");
 
-const router = useRouter();
 const sendForm = async () => {
     isLoading.value = true;
     try {
