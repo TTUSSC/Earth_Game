@@ -115,7 +115,7 @@ const time_formatter = new Intl.DateTimeFormat('zh-TW', {
     <!-- 表單 -->
     <form class="row align-items-center needs-validation my-3" @submit.prevent="lock">
       <div class="col mb-3">
-        <input type="text" class="form-control" id="account" v-model="account" placeholder="輸入 Email" required
+        <input type="email" class="form-control" id="account" v-model="account" placeholder="輸入 Email" required
           :disabled="account_locked" />
         <div class="valid-feedback">Looks good!</div>
         <div class="invalid-feedback">Looks bad!</div>
