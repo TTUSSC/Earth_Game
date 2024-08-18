@@ -28,7 +28,7 @@ const waiting = ref(false);
 
 const sendStamp = async () => {
     isLoading.value = true;
-    if (await recordExist(authStore.email, scanEmail.value)) {
+    if (await recordExist(authStore.email, scanEmail.value, is_IG.value)) {
         isLoading.value = false;
         return;
     }
@@ -36,6 +36,7 @@ const sendStamp = async () => {
         const formData = new FormData();
         formData.append("entry.1180634340", authStore.email);
         formData.append("entry.1788223982", scanEmail.value);
+        formData.append("entry.914325063", is_IG.value);
 
         await
             fetch('https://docs.google.com/forms/u/2/d/e/1FAIpQLScMibiJl3amUlq6x91EwApaW7XqnRTl51ZQagvWz3vNftR3tw/formResponse', {
@@ -63,9 +64,10 @@ const sendStamp = async () => {
     // }
 }
 
-const recordExist = async (club_email, user_email) => {
-    const record = await recordsStore.query_record(club_email, user_email);
+const recordExist = async (club_email, user_email, is_IG) => {
+    const record = await recordsStore.query_record(club_email, user_email, is_IG);
 
+    console.log(is_IG, record);
     if (record) {
         // conflict
         isError.value = true;
@@ -109,17 +111,29 @@ const handleScanSuccess = async (data) => {
 
 const pageMsg = ref('');
 const isError = ref(false);
+
+const is_IG = ref(false);
+let toggle_type_btn = () => {
+    is_IG.value = !is_IG.value;
+}
 </script>
 
 <template>
     <div>
         <div v-if="authStore.isLoggedIn && authStore.is_club">
-            <h1 class="mb-4">{{ authStore.name }}：掃描</h1>
-            <div v-if="pageMsg" class="mt-3 text-break" :class="['alert', isError ? 'alert-danger' : 'alert-success']"
-                role="alert">
+            <h1 class="mb-4">{{ authStore.name }}：{{ is_IG ? '限動' : '掃描' }}</h1>
+            <div v-if="pageMsg" class="mt-3 text-break alert-dismissible fade show"
+                :class="['alert', isError ? 'alert-danger' : 'alert-success']" role="alert">
                 {{ pageMsg }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
             <QRcodeReader @scan-success="handleScanSuccess" />
+            <div class="row mb-4">
+                <button class="d-grid col-6 mx-auto btn" @click="toggle_type_btn"
+                    :class="{ 'btn-warning': is_IG, 'btn-success': !is_IG }">
+                    {{ is_IG ? 'IG 打卡掃描' : '活動蓋章掃描' }}
+                </button>
+            </div>
         </div>
         <div v-if="isLoading" class="loading-overlay">
             <div class="spinner-border text-primary" role="status">
