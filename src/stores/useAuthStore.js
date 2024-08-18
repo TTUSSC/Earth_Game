@@ -7,6 +7,7 @@ export const useAuthStore = defineStore('auth', {
     state: () => ({
         name: null,
         nick_name: null,
+        department: null,
         email: null,
         phone: null,
         stamps: null,
@@ -35,6 +36,7 @@ export const useAuthStore = defineStore('auth', {
 
                 this.name = user["name"];
                 this.nick_name = user["nick_name"];
+                this.department = user["department"];
                 this.email = user["email"];
                 this.phone = user["phone_number"];
                 console.log("user login successed!");

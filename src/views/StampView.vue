@@ -175,6 +175,7 @@ const time_formatter = new Intl.DateTimeFormat('zh-TW', {
             <p class="card-text">
               <span>姓名: {{ authStore.name }}</span><br>
               <span>暱稱: {{ authStore.nick_name }}</span><br>
+              <span>科系: {{ authStore.department }}</span><br>
               <span>電子信箱: {{ authStore.email }}</span><br>
               <span>電話號碼: {{ authStore.phone }}</span>
             </p>
