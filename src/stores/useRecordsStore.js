@@ -51,6 +51,7 @@ export const useRecordsStore = defineStore('records', {
                         club_stamp: club_stamp,
                         club_email: this.data[i]['club_email'],
                         created_time: this.data[i]['created_time'],
+                        is_ig: this.data[i]['is_ig'],
                     });
                 }
             }

@@ -168,7 +168,8 @@ const time_formatter = new Intl.DateTimeFormat('zh-TW', {
           }">
             <div class="card my-2" v-for="i in authStore.records" :key="i.created_time">
               <div class="card-header">
-                <strong>{{ i.club_name }}</strong>
+                <strong>{{ i.club_name }}&nbsp;</strong>
+                <span v-if="i.is_ig" class="badge rounded-pill text-bg-danger">限時動態</span>
               </div>
               <div class="card-body">
                 <p v-if="i.club_stamp != ''">{{ i.club_stamp }}</p>
@@ -184,13 +185,13 @@ const time_formatter = new Intl.DateTimeFormat('zh-TW', {
       <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
         <div class="card" v-if="authStore.isLoggedIn">
           <div class="card-header">
+            <strong>{{ authStore.name }}&nbsp;</strong>
             <span class="badge rounded-pill"
               :class="{ 'text-bg-success': authStore.access_priv, 'text-bg-danger': !authStore.access_priv }">
               {{ authStore.access_priv ? "集點中" : "已兌換抽獎券" }}</span>
           </div>
           <div class="card-body">
             <p class="card-text">
-              <span>姓名： {{ authStore.name }}</span><br>
               <span>暱稱： {{ authStore.nick_name }}</span><br>
               <span>科系： {{ authStore.department }}</span><br>
               <span>電子信箱： {{ authStore.email }}</span><br>
