@@ -59,7 +59,9 @@ const tabContent = ref(null);
 const remainingHeight = ref(0);
 
 onMounted(() => {
+  console.log("auth email:", authStore.email)
   if (authStore.isLoggedIn) {
+    console.log("user is already loged in.")
     account.value = authStore.email;
     if (!account_locked.value) {
       account_locked.value = true;
@@ -71,6 +73,16 @@ onMounted(() => {
   calculateRemainingHeight();
   window.addEventListener('resize', calculateRemainingHeight);
 });
+
+if (authStore.isLoggedIn) {
+  console.log("user is already loged in.")
+  account.value = authStore.email;
+  if (!account_locked.value) {
+    account_locked.value = true;
+    btn_class.value = "btn btn-danger";
+    btn_text.value = "登出"
+  }
+}
 
 const calculateRemainingHeight = () => {
   if (tabContent.value) {

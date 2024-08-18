@@ -2,8 +2,12 @@
 import { ref, computed } from 'vue';
 import axios from 'axios';
 import { useRouter } from 'vue-router';
+import { useUserStore } from '@/stores/useUsersStore';
+import { useAuthStore } from '@/stores/useAuthStore';
 
 const router = useRouter();
+const userStore = useUserStore();
+const authStore = useAuthStore();
 
 let name = ref("");
 let nick_name = ref("");
@@ -49,30 +53,54 @@ const sendForm = async () => {
                 body: formData
             });
             console.log('Form submitted successfully')
-            isError.value = false;
-            registrationMessage.value = "註冊成功！";
-            clearForm();
-            router.push({
-                name: 'stamp'
-            });
+            console.log("Submitted email:", email.value);
+
+            let usr = null;
+            // 嘗試 5 次
+            for (let i = 0; i < 5; i++) {
+                console.log(`Attempt ${i + 1} to fetch user data`);
+                await userStore.callAPI();
+                usr = await userStore.get_user_by_email(email.value);
+                console.log("API response:", usr);
+                if (usr) {
+                    console.log("i=", i, "found updated user:", usr)
+                    isError.value = false;
+                    break;
+                } else isError.value = true;
+            }
+
+            if (!isError.value) {
+                registrationMessage.value = "註冊成功！";
+                console.log("trying to login.");
+                //await userStore.callAPI();
+                await authStore.user_login(email.value);
+                console.log('name:', authStore.name);
+                console.log('nick_name:', authStore.nick_name);
+                console.log('department:', authStore.department);
+                console.log('email:', authStore.email);
+                console.log('phone:', authStore.phone);
+                isLoading.value = false;
+                clearForm();
+                router.push({
+                    name: 'stamp'
+                });
+            } else {
+                registrationMessage.value = "資料提交失敗";
+            }
+
         } else {
+            isLoading.value = false;
             console.log("驗證失敗或未勾選同意條款")
         }
     } catch (error) {
         isError.value = true;
         registrationMessage.value = "註冊表單錯誤：" + error;
+        was_validated.value = false
         console.error("Error submitting form:", error);
         // 處理錯誤，比如顯示錯誤消息
     } finally {
         isLoading.value = false;
     }
-
-    // 檢查有沒有上傳成功
-    // if (checkSubmit()) {
-    //     console.log("submit successed!");
-    // } else {
-    //     console.log("submit failed!");
-    // }
 }
 
 // 驗證函數
