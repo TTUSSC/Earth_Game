@@ -183,13 +183,18 @@ const time_formatter = new Intl.DateTimeFormat('zh-TW', {
       </div>
       <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
         <div class="card" v-if="authStore.isLoggedIn">
+          <div class="card-header">
+            <span class="badge rounded-pill"
+              :class="{ 'text-bg-success': authStore.access_priv, 'text-bg-danger': !authStore.access_priv }">
+              {{ authStore.access_priv ? "集點中" : "已兌換抽獎券" }}</span>
+          </div>
           <div class="card-body">
             <p class="card-text">
-              <span>姓名: {{ authStore.name }}</span><br>
-              <span>暱稱: {{ authStore.nick_name }}</span><br>
-              <span>科系: {{ authStore.department }}</span><br>
-              <span>電子信箱: {{ authStore.email }}</span><br>
-              <span>電話號碼: {{ authStore.phone }}</span>
+              <span>姓名： {{ authStore.name }}</span><br>
+              <span>暱稱： {{ authStore.nick_name }}</span><br>
+              <span>科系： {{ authStore.department }}</span><br>
+              <span>電子信箱： {{ authStore.email }}</span><br>
+              <span>電話號碼： {{ authStore.phone }}</span><br>
             </p>
           </div>
         </div>
