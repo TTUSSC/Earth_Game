@@ -18,16 +18,16 @@
               <button @click="navigateTo('/')" class="nav-link">首頁</button>
             </li>
             <li class="nav-item" v-if="!authStore.is_club">
-              <button @click="navigateTo('/stamp')" class="nav-link">蓋章</button>
+              <button @click="navigateTo('/stamp')" class="nav-link">活動蓋章</button>
             </li>
             <li class="nav-item">
               <button @click="navigateTo('/partner')" class="nav-link">合作夥伴</button>
             </li>
             <li class="nav-item" v-if="!authStore.isLoggedIn">
-              <button @click="navigateTo('/register')" class="nav-link">註冊</button>
+              <button @click="navigateTo('/register')" class="nav-link">註冊帳號</button>
             </li>
             <li class="nav-item" v-if="!authStore.isLoggedIn">
-              <button @click="navigateTo('/club')" class="nav-link">我是社團</button>
+              <button @click="navigateTo('/club_login')" class="nav-link">社團登入</button>
             </li>
             <li class="nav-item" v-if="authStore.is_club">
               <button @click="navigateTo('/scan')" class="nav-link">掃描新生</button>
