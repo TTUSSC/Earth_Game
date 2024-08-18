@@ -20,11 +20,14 @@ export const useRecordsStore = defineStore('records', {
             console.log('useRecordsStore:', this.data);
         },
         async query_record(club_email, user_email, is_ig) {
-            console.log("query_record(" + club_email + ", " + user_email + ")")
+            console.log("query_record(", club_email, ", ", user_email, ", ", is_ig, ")")
             await this.callAPI();
+            console.log(this.data);
             for (let i = 0; i < this.data.length; i++) {
-                console.log(this.data[i]['club_email'] + ' ' + this.data[i]['user_email']);
-                if (this.data[i]['club_email'] == club_email && this.data[i]['user_email'] == user_email, this.data[i]['is_ig'] == is_ig) {
+                console.log(this.data[i]['club_email'], this.data[i]['user_email'], this.data[i]['is_ig']);
+                if (this.data[i]['club_email'] == club_email &&
+                    this.data[i]['user_email'] == user_email &&
+                    this.data[i]['is_ig'] == is_ig) {
                     console.log("record found:");
                     console.log(this.data[i]);
                     return this.data[i];
