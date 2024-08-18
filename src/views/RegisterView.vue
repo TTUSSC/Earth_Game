@@ -7,6 +7,7 @@ const router = useRouter();
 
 let name = ref("");
 let nick_name = ref("");
+let department = ref("");
 let email = ref("");
 let phone = ref("");
 let password = ref("");
@@ -20,6 +21,7 @@ const isError = ref(false);
 const errors = ref({
     name: '',
     nick_name: '',
+    department: '',
     email: '',
     phone: '',
     password: '',
@@ -39,6 +41,7 @@ const sendForm = async () => {
             formData.append("entry.1883933211", nick_name.value);
             formData.append("entry.2093473455", email.value);
             formData.append("entry.1241463021", phone.value);
+            formData.append("entry.1370233916", department.value);
 
             await fetch('https://docs.google.com/forms/u/0/d/e/1FAIpQLSfijitS0keu4OKn0P6PdaVg_R9QGPwsP5jl7Wa7RIOnNeNYbA/formResponse', {
                 method: 'POST',
@@ -74,7 +77,7 @@ const sendForm = async () => {
 
 // 驗證函數
 const validateField = (field, value, rules) => {
-    if (rules.required && !value) {
+    if (rules.required && (!value || value === '')) {
         errors.value[field] = '此欄位為必填';
         return false;
     }
@@ -93,6 +96,7 @@ const validateField = (field, value, rules) => {
 // 表單驗證
 const nameError = computed(() => validateField('name', name.value, { required: true }));
 const nickNameError = computed(() => validateField('nick_name', nick_name.value, { required: false }));
+const departmentError = computed(() => validateField('department', department.value, { required: true }));
 const emailError = computed(() => validateField('email', email.value, { required: true, pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/ }));
 const phoneError = computed(() => validateField('phone', phone.value, { required: true, pattern: /^\d{10}$/ }));
 //const passwordError = computed(() => validateField('password', password.value, { required: true, minLength: 6 }));
@@ -102,8 +106,8 @@ const checkError = computed(() => validateField('check', formCheck.value, { requ
 const isFormValid = computed(() => {
     // return nameError.value && nickNameError.value && emailError.value &&
     //     phoneError.value && passwordError.value && checkError.value;
-    return nameError.value && nickNameError.value && emailError.value &&
-        phoneError.value && checkError.value;
+    return nameError.value && nickNameError.value && departmentError.value &&
+        emailError.value && phoneError.value && checkError.value;
 });
 
 async function validForm() {
@@ -170,10 +174,28 @@ const clearForm = () => {
                     id="name" placeholder="姓名" required>
                 <div class="invalid-feedback">{{ errors.name }}</div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <input type="text" v-model="nick_name" class="form-control" :class="{ 'is-invalid': !nickNameError }"
                     name="nick_name" id="nick_name" placeholder="暱稱" required>
                 <div class="invalid-feedback">{{ errors.nick_name }}</div>
+            </div>
+            <div class="col-md-6">
+                <select v-model="department" class="form-select" :class="{ 'is-invalid': !departmentError }"
+                    name="department" id="department" required>
+                    <option value="" selected disabled>選擇科系</option>
+                    <hr>
+                    <option value="機械與材料工程學系">機械與材料工程學系</option>
+                    <option value="化學工程與生物科技學系">化學工程與生物科技學系</option>
+                    <option value="工程學院學士班">工程學院學士班</option>
+                    <option value="電機工程學系">電機工程學系</option>
+                    <option value="資訊工程學系">資訊工程學系</option>
+                    <option value="事業經營學系">事業經營學系</option>
+                    <option value="資訊經營學系">資訊經營學系</option>
+                    <option value="工業設計學系">工業設計學系</option>
+                    <option value="媒體設計學系">媒體設計學系</option>
+                    <option value="應用外語學系">應用外語學系</option>
+                </select>
+                <div class="invalid-feedback">{{ errors.department }}</div>
             </div>
             <div class="col-md-6">
                 <input type="email" v-model="email" class="form-control" :class="{ 'is-invalid': !emailError }"
