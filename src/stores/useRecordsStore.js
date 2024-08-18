@@ -17,8 +17,7 @@ export const useRecordsStore = defineStore('records', {
                 }
             });
             this.data = response.data;
-            console.log('useRecordsStore:');
-            console.log(this.data);
+            console.log('useRecordsStore:', this.data);
         },
         async query_record(club_email, user_email) {
             console.log("query_record(" + club_email + ", " + user_email + ")")

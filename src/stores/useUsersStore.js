@@ -16,8 +16,7 @@ export const useUserStore = defineStore('users', {
                     }
                 });
                 this.data = response.data;
-                console.log('useUsersStore:');
-                console.log(this.data);
+                console.log('useUsersStore:', this.data);
             } catch (error) {
                 console.log('call api error: ' + error);
                 return;
