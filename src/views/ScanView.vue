@@ -122,10 +122,9 @@ let toggle_type_btn = () => {
     <div>
         <div v-if="authStore.isLoggedIn && authStore.is_club">
             <h1 class="mb-4">{{ authStore.name }}：{{ is_IG ? '限動' : '掃描' }}</h1>
-            <div v-if="pageMsg" class="mt-3 text-break alert-dismissible fade show"
-                :class="['alert', isError ? 'alert-danger' : 'alert-success']" role="alert">
+            <div v-if="pageMsg" class="mt-3 text-break " :class="['alert', isError ? 'alert-danger' : 'alert-success']"
+                role="alert">
                 {{ pageMsg }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
             <QRcodeReader @scan-success="handleScanSuccess" />
             <div class="row mb-4">
