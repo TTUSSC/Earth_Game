@@ -36,7 +36,7 @@ const authStore = useAuthStore();
         </div>
       </div>
       <div v-show="!authStore.isLoggedIn || (authStore.isLoggedIn && authStore.is_club)" class="card-btn card mb-2"
-        @click="router.push({ name: 'club' });">
+        @click="router.push({ name: 'club_login' });">
         <div class="card-body">
           我是社團，要走秘密通道
         </div>

@@ -20,7 +20,7 @@ const router = useRouter();
 
 // check login inro
 onMounted(() => {
-    if (!authStore.isLoggedIn || !authStore.is_club) router.push({ name: 'club' });
+    if (!authStore.isLoggedIn || !authStore.is_club) router.push({ name: 'club_login' });
 })
 
 const isLoading = ref(false);
