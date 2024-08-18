@@ -136,7 +136,7 @@ const time_formatter = new Intl.DateTimeFormat('zh-TW', {
       </li>
       <li class="nav-item" role="presentation">
         <button class="nav-link" id="card-tab" data-bs-toggle="tab" data-bs-target="#card-tab-pane" type="button"
-          role="tab" aria-controls="card-tab-pane" aria-selected="false" @click="get_record">
+          role="tab" aria-controls="card-tab-pane" aria-selected="false" @click="authStore.get_records()">
           集點卡
         </button>
       </li>
