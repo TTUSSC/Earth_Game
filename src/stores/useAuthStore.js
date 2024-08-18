@@ -49,7 +49,7 @@ export const useAuthStore = defineStore('auth', {
             }
         },
         async club_login(email, password) {
-            console.log("email: ", email, "password: ", password);
+            console.log("email:", email, "password:", password);
             const clubStore = useClubsStore();
             const club = await clubStore.get_user_by_email_password(email, password);
             console.log('club: ' + club);
@@ -60,7 +60,7 @@ export const useAuthStore = defineStore('auth', {
 
                 this.name = club["name"];
                 this.email = club["email"];
-                console.log("club login successed!");
+                console.log("club login successful!");
             } else {
                 console.log('login failed :(');
                 return;
