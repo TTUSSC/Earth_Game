@@ -94,7 +94,10 @@ export default {
 
   <footer class="footer mt-auto py-3 bg-body-tertiary">
     <div class="container">
-      <span class="text-body-secondary">TTUSSC All Right Reserve</span>
+      <p class="text-body-secondary">
+        &copy; 2024 <a href="http://ttussc.github.io">TTUSSC</a>. Licensed under <a
+          href="https://github.com/TTUSSC/Earth_Game/blob/main/LICENSE">MIT</a>
+      </p>
     </div>
   </footer>
 </template>
