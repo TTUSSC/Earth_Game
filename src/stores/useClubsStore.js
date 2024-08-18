@@ -16,10 +16,9 @@ export const useClubsStore = defineStore('clubs', {
                     }
                 });
                 this.data = response.data;
-                console.log('useClubsStore:');
-                console.log(this.data);
+                console.log('useClubsStore:', this.data);
             } catch (error) {
-                console.log('call api error: ' + error);
+                console.log('call api error: ', error);
                 return;
             }
         },
@@ -28,7 +27,6 @@ export const useClubsStore = defineStore('clubs', {
             if (this.data === null) await this.callAPI();
             const club = this.data.find(club => club.email === email);
             if (club) {
-                console.log("club found:", club);
                 return club;
             }
             console.log("club not found.");
@@ -37,10 +35,8 @@ export const useClubsStore = defineStore('clubs', {
         async get_user_by_email_password(email, password) {
             if (this.data === null) await this.callAPI();
             for (let i = 0; i < this.data.length; i++) {
-                console.log(this.data[i]['email'] + ' ' + this.data[i]['password']);
+                console.log(this.data[i]['email'], this.data[i]['password']);
                 if (this.data[i]['email'] == email && this.data[i]['password'] == password) {
-                    console.log("club found:");
-                    console.log(this.data[i]);
                     return this.data[i];
                 }
             }

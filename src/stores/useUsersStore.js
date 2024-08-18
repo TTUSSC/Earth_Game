@@ -27,8 +27,7 @@ export const useUserStore = defineStore('users', {
             if (this.data === null) await this.callAPI();
             for (let i = 0; i < this.data.length; i++) {
                 if (this.data[i]['email'] === email) {
-                    console.log("user found: ")
-                    console.log(this.data[i])
+                    console.log("user found: ", this.data[i]);
                     return this.data[i];
                 }
             }

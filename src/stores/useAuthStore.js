@@ -14,6 +14,7 @@ export const useAuthStore = defineStore('auth', {
         is_club: false,
 
         token: null,
+        access_priv: false,
         records: null,
     }),
     actions: {
@@ -25,26 +26,30 @@ export const useAuthStore = defineStore('auth', {
         },
         async user_login(email) {
             const usersStore = useUserStore();
-            const user = await usersStore.get_user_by_email(email);
-            console.log('user:');
-            console.log(user);
+            try {
+                const user = await usersStore.get_user_by_email(email);
+                console.log('user:', user);
 
-            if (user == {}) {
-                console.log('login failed :(');
-            } else {
-                this.token = user["user_id"];
+                if (!user) {
+                    console.log('login failed :(');
+                } else {
+                    this.token = user["user_id"];
+                    this.access_priv = user["access_priv"];
 
-                this.name = user["name"];
-                this.nick_name = user["nick_name"];
-                this.department = user["department"];
-                this.email = user["email"];
-                this.phone = user["phone_number"];
-                console.log("user login successed!");
+                    this.name = user["name"];
+                    this.nick_name = user["nick_name"];
+                    this.department = user["department"];
+                    this.email = user["email"];
+                    this.phone = user["phone_number"];
+                    console.log("user login successful!");
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                return false;
             }
         },
         async club_login(email, password) {
-            console.log("email: " + email);
-            console.log("password: " + password);
+            console.log("email: ", email, "password: ", password);
             const clubStore = useClubsStore();
             const club = await clubStore.get_user_by_email_password(email, password);
             console.log('club: ' + club);
@@ -68,6 +73,7 @@ export const useAuthStore = defineStore('auth', {
 
             this.name = null;
             this.nick_name = null;
+            this.department = null;
             this.email = null;
             this.phone = null;
             console.log('logout successed :p');
