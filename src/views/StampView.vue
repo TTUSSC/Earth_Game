@@ -1,6 +1,6 @@
 <script setup>
 import createQRcode from '@/components/createQRcode.vue'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useUserStore } from '@/stores/useUsersStore';
 import { useAuthStore } from '@/stores/useAuthStore';
 import { useRecordsStore } from '@/stores/useRecordsStore';
@@ -19,6 +19,9 @@ const pageMsg = ref('');
 const isError = ref(false);
 
 const account = ref('');
+
+const access_priv = computed(() => authStore.access_priv);
+
 
 let account_locked = ref(false);
 let btn_class = ref("btn btn-primary");
@@ -95,12 +98,12 @@ const calculateRemainingHeight = () => {
 };
 
 const time_formatter = new Intl.DateTimeFormat('zh-TW', {
-  year: 'numeric',
+  // year: 'numeric',
   month: '2-digit',
   day: '2-digit',
   hour: '2-digit',
   minute: '2-digit',
-  second: '2-digit',
+  // second: '2-digit',
   hour12: false
 });
 </script>
@@ -157,7 +160,7 @@ const time_formatter = new Intl.DateTimeFormat('zh-TW', {
         }">
           <createQRcode :url="account.trim()" />
         </div>
-        <div v-else-if="!authStore.access_priv">
+        <div v-else-if="authStore.isLoggedIn && !authStore.access_priv">
           兌換完抽獎券，帳號已經被鎖定了喔～
         </div>
         <div v-else>
@@ -170,8 +173,9 @@ const time_formatter = new Intl.DateTimeFormat('zh-TW', {
           <div class="overflow-auto" :style="{
             maxHeight: remainingHeight + `px`
           }">
-            <div class="card my-2" v-for="i in authStore.records" :key="i.created_time">
+            <div class="card my-2" v-for="i in computed(() => authStore.records).value" :key="i.created_time">
               <div class="card-header">
+                <!-- <span class="ms-auto">{{ time_formatter.format(new Date(i.created_time)) }} @ </span> -->
                 <strong>{{ i.club_name }}&nbsp;</strong>
                 <span v-if="i.is_ig" class="badge rounded-pill text-bg-danger">限時動態</span>
               </div>
@@ -191,8 +195,8 @@ const time_formatter = new Intl.DateTimeFormat('zh-TW', {
           <div class="card-header">
             <strong>{{ authStore.name }}&nbsp;</strong>
             <span class="badge rounded-pill"
-              :class="{ 'text-bg-success': authStore.access_priv, 'text-bg-danger': !authStore.access_priv }">
-              {{ authStore.access_priv ? "集點中" : "已兌換抽獎券" }}</span>
+              :class="{ 'text-bg-success': access_priv, 'text-bg-danger': !access_priv }">
+              {{ access_priv ? "集點中" : "已兌換抽獎券" }}</span>
           </div>
           <div class="card-body">
             <p class="card-text">
