@@ -28,8 +28,8 @@ const waiting = ref(false);
 
 const sendStamp = async () => {
     isLoading.value = true;
-    const user = usersStore.get_user_by_email(scanEmail.value);
-    if (!user.asccess_priv) {
+    const user = await usersStore.get_user_by_email(scanEmail.value);
+    if (user.access_priv != true) {
         isError.value = true;
         pageMsg.value = "帳號已經兌換過抽獎券了";
         isLoading.value = false;
