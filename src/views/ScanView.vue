@@ -32,6 +32,11 @@ const sendStamp = async () => {
         isLoading.value = false;
         return;
     }
+    const user = usersStore.get_user_by_email(scanEmail.value);
+    if (!user.asccess_priv) {
+        isError.value = true;
+        pageMsg.value = "帳號已經兌換過抽獎券了";
+    }
     try {
         const formData = new FormData();
         formData.append("entry.1180634340", authStore.email);
