@@ -28,6 +28,8 @@ const waiting = ref(false);
 
 const sendStamp = async () => {
     isLoading.value = true;
+    console.log("sendStamp() update user data.");
+    await usersStore.callAPI();
     const user = await usersStore.get_user_by_email(scanEmail.value);
     if (user.access_priv != true) {
         isError.value = true;
