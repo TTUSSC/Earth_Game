@@ -1,6 +1,6 @@
 <script setup>
 import createQRcode from '@/components/createQRcode.vue'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useUserStore } from '@/stores/useUsersStore';
 import { useAuthStore } from '@/stores/useAuthStore';
 import { useRecordsStore } from '@/stores/useRecordsStore';
@@ -19,6 +19,7 @@ const pageMsg = ref('');
 const isError = ref(false);
 
 const account = ref('');
+const account_lower = computed(() => { return account.value.toLowerCase(); });
 
 let account_locked = ref(false);
 let btn_class = ref("btn btn-primary");
@@ -36,7 +37,8 @@ const lock = async () => {
   }
 
   if (account_locked.value) {
-    await authStore.user_login(account.value);
+    console.log('login account:', account_lower);
+    await authStore.user_login(account_lower.value);
 
     if (!authStore.isLoggedIn) {
       isError.value = true;
