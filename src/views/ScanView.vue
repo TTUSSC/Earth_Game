@@ -32,6 +32,8 @@ const sendStamp = async () => {
     if (!user.asccess_priv) {
         isError.value = true;
         pageMsg.value = "帳號已經兌換過抽獎券了";
+        isLoading.value = false;
+        return;
     }
     if (await recordExist(authStore.email, scanEmail.value, is_IG.value)) {
         isLoading.value = false;
