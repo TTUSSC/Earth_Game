@@ -2,8 +2,8 @@
   <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-danger">
     <div class="container-fluid">
       <RouterLink to="/" class="navbar-brand">
-        <img src="/SSC_logo.png" height="32px" alt="Logo" />
-        <span>社團博覽會大地遊戲</span>
+        <!-- <img src="/SSC_logo.png" height="32px" alt="Logo" /> -->
+        <strong>TTU 社團博覽會</strong>
       </RouterLink>
 
       <button class="navbar-toggler" @click="toggleNav()" type="button" aria-controls="navbarCollapse"

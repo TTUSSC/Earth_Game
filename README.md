@@ -1,6 +1,6 @@
-# Earth_Game
+# TTU 社團博覽會
 
-社博大地遊戲網頁 aka 丐版 OPass。
+TTU 社團博覽會集點系統 aka. 丐版 OPass。使用 Google sheet 儲存資料、 Google 表單更新資料，無需使用額外的伺服器資源。
 
 ## Recommended IDE Setup
 
