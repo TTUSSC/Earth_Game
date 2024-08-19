@@ -19,7 +19,6 @@ const pageMsg = ref('');
 const isError = ref(false);
 
 const account = ref('');
-const account_lower = computed(() => { return account.value.toLowerCase(); });
 
 let account_locked = ref(false);
 let btn_class = ref("btn btn-primary");
@@ -37,8 +36,8 @@ const lock = async () => {
   }
 
   if (account_locked.value) {
-    console.log('login account:', account_lower);
-    await authStore.user_login(account_lower.value);
+    console.log('login account:', account);
+    await authStore.user_login(account.value);
 
     if (!authStore.isLoggedIn) {
       isError.value = true;

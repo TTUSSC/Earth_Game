@@ -25,6 +25,7 @@ export const useAuthStore = defineStore('auth', {
             console.log("email: " + this.email, this.records)
         },
         async user_login(email) {
+            email = email.toLowerCase();
             const usersStore = useUserStore();
             try {
                 const user = await usersStore.get_user_by_email(email);

@@ -43,7 +43,7 @@ const sendForm = async () => {
             const formData = new FormData();
             formData.append("entry.1936143612", name.value);
             formData.append("entry.1883933211", nick_name.value);
-            formData.append("entry.2093473455", email.value);
+            formData.append("entry.2093473455", email.value.toLowerCase());
             formData.append("entry.1241463021", phone.value);
             formData.append("entry.1370233916", department.value);
 
