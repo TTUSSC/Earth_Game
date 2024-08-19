@@ -78,6 +78,32 @@ export const useAuthStore = defineStore('auth', {
             this.email = null;
             this.phone = null;
             console.log('logout successed :p');
+        },
+        async update_auth() {
+            const usersStore = useUserStore();
+            usersStore.callAPI();
+            try {
+                const user = await usersStore.get_user_by_email(this.email);
+                console.log('user:', user);
+
+                if (!user) {
+                    console.log('Update auth data failed, unknown account:', this.email);
+                } else {
+                    this.token = user["user_id"];
+                    this.access_priv = user["access_priv"];
+
+                    this.name = user["name"];
+                    this.nick_name = user["nick_name"];
+                    this.department = user["department"];
+                    this.email = user["email"];
+                    this.phone = user["phone_number"];
+                    console.log("Update auth data successful!");
+                }
+            } catch (error) {
+                console.error('Update auth data error:', error);
+                return false;
+            }
+
         }
     },
     getters: {

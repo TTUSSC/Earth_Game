@@ -1,6 +1,6 @@
 <script setup>
 import createQRcode from '@/components/createQRcode.vue'
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useUserStore } from '@/stores/useUsersStore';
 import { useAuthStore } from '@/stores/useAuthStore';
 import { useRecordsStore } from '@/stores/useRecordsStore';
@@ -137,13 +137,13 @@ const time_formatter = new Intl.DateTimeFormat('zh-TW', {
       </li>
       <li class="nav-item" role="presentation">
         <button class="nav-link" id="card-tab" data-bs-toggle="tab" data-bs-target="#card-tab-pane" type="button"
-          role="tab" aria-controls="card-tab-pane" aria-selected="false" @click="authStore.get_records()">
+          role="tab" aria-controls="card-tab-pane" aria-selected="false" @click="authStore.get_records();">
           集點卡
         </button>
       </li>
       <li class="nav-item" role="presentation">
         <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button"
-          role="tab" aria-controls="profile-tab-pane" aria-selected="false">
+          role="tab" aria-controls="profile-tab-pane" aria-selected="false" @click="authStore.update_auth();">
           個人資料
         </button>
       </li>
@@ -152,10 +152,13 @@ const time_formatter = new Intl.DateTimeFormat('zh-TW', {
     <div class="tab-content" id="myTabContent" ref="tabContent">
       <div class="tab-pane fade show active" id="qrcode-tab-pane" role="tabpanel" aria-labelledby="qrcode-tab"
         tabindex="0">
-        <div v-if="authStore.isLoggedIn" class="mx-auto" :style="{
+        <div v-if="authStore.isLoggedIn && authStore.access_priv" class="mx-auto" :style="{
           maxHeight: remainingHeight + `px`
         }">
           <createQRcode :url="account.trim()" />
+        </div>
+        <div v-else-if="!authStore.access_priv">
+          兌換完抽獎券，帳號已經被鎖定了喔～
         </div>
         <div v-else>
           沒登入不能掃描 QR code 喔
