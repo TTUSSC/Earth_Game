@@ -28,14 +28,14 @@ const waiting = ref(false);
 
 const sendStamp = async () => {
     isLoading.value = true;
-    if (await recordExist(authStore.email, scanEmail.value, is_IG.value)) {
-        isLoading.value = false;
-        return;
-    }
     const user = usersStore.get_user_by_email(scanEmail.value);
     if (!user.asccess_priv) {
         isError.value = true;
         pageMsg.value = "帳號已經兌換過抽獎券了";
+    }
+    if (await recordExist(authStore.email, scanEmail.value, is_IG.value)) {
+        isLoading.value = false;
+        return;
     }
     try {
         const formData = new FormData();
