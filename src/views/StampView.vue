@@ -52,7 +52,7 @@ const lock = async () => {
     } else {
       isError.value = false;
       pageMsg.value = ""
-      await authStore.get_records();
+      await authStore.get_user_records();
     }
   } else {
     authStore.logout();
@@ -140,7 +140,7 @@ const time_formatter = new Intl.DateTimeFormat('zh-TW', {
       </li>
       <li class="nav-item" role="presentation">
         <button class="nav-link" id="card-tab" data-bs-toggle="tab" data-bs-target="#card-tab-pane" type="button"
-          role="tab" aria-controls="card-tab-pane" aria-selected="false" @click="authStore.get_records();">
+          role="tab" aria-controls="card-tab-pane" aria-selected="false" @click="authStore.get_user_records();">
           集點卡
         </button>
       </li>
@@ -174,10 +174,12 @@ const time_formatter = new Intl.DateTimeFormat('zh-TW', {
             maxHeight: remainingHeight + `px`
           }">
             <div class="card my-2" v-for="i in computed(() => authStore.records).value" :key="i.created_time">
-              <div class="card-header">
+              <div class="card-header d-flex align-items-center">
                 <!-- <span class="ms-auto">{{ time_formatter.format(new Date(i.created_time)) }} @ </span> -->
                 <strong>{{ i.club_name }}&nbsp;</strong>
-                <span v-if="i.is_ig" class="badge rounded-pill text-bg-danger">限時動態</span>
+                <span class="badge rounded-pill" :class="{ 'text-bg-danger': i.is_ig, 'text-bg-primary': !i.is_ig, }">
+                  {{ i.is_ig ? "限時動態" : "攤位集點" }}
+                </span>
               </div>
               <div class="card-body">
                 <p v-if="i.club_stamp != ''">{{ i.club_stamp }}</p>
@@ -192,7 +194,7 @@ const time_formatter = new Intl.DateTimeFormat('zh-TW', {
       </div>
       <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
         <div class="card" v-if="authStore.isLoggedIn">
-          <div class="card-header">
+          <div class="card-header d-flex align-items-center">
             <strong>{{ authStore.name }}&nbsp;</strong>
             <span class="badge rounded-pill"
               :class="{ 'text-bg-success': access_priv, 'text-bg-danger': !access_priv }">

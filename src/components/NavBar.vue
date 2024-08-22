@@ -30,6 +30,9 @@
               <button @click="navigateTo('/club_login')" class="nav-link">社團登入</button>
             </li>
             <li class="nav-item" v-if="authStore.is_club">
+              <button @click="navigateTo('/panel')" class="nav-link">社團後台</button>
+            </li>
+            <li class="nav-item" v-if="authStore.is_club">
               <button @click="navigateTo('/scan')" class="nav-link">掃描新生</button>
             </li>
           </ul>

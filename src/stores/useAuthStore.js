@@ -18,10 +18,16 @@ export const useAuthStore = defineStore('auth', {
         records: null,
     }),
     actions: {
-        async get_records() {
+        async get_user_records() {
             const recordsStore = useRecordsStore();
             if (!this.isLoggedIn) return;
             this.records = await recordsStore.query_by_user(this.email)
+            console.log("email: " + this.email, this.records)
+        },
+        async get_club_records() {
+            const recordsStore = useRecordsStore();
+            if (!this.isLoggedIn) return;
+            this.records = await recordsStore.query_by_club(this.email)
             console.log("email: " + this.email, this.records)
         },
         async user_login(email) {

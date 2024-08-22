@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import { useClubsStore } from './useClubsStore';
+import { useUserStore } from './useUsersStore';
 import { ref } from 'vue';
 import axios from 'axios';
 
@@ -66,16 +67,32 @@ export const useRecordsStore = defineStore('records', {
             return list;
         },
         async query_by_club(club_email) {
+            const usersStore = useUserStore();
             await this.callAPI();
+            let list = [];
+            const user = ref();
             for (let i = 0; i < this.data.length; i++) {
-                if (this.data['club_email'] === club_email) {
-                    console.log("record found:");
-                    console.log(this.data[i]);
-                    return this.data[i];
+                console.log(this.data[i]['club_email']);
+                if (this.data[i]['club_email'] === club_email) {
+                    user.value = await usersStore.get_user_by_email(this.data[i]['user_email']);
+                    console.log(user.value);
+                    let user_name = user.value.name;
+                    console.log("user_name: ", user_name)
+                    list.push({
+                        user_name: user_name,
+                        created_time: this.data[i]['created_time'],
+                        is_ig: this.data[i]['is_ig'],
+                    })
                 }
             }
-            console.log("record not found.");
-            return false;
+
+            if (list == []) {
+                console.log('record not found');
+                list = false;
+            }
+
+            console.log('query_by_user list:', list);
+            return list;
         }
     },
     getters: {}
