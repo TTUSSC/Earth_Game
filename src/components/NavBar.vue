@@ -27,8 +27,11 @@
               <button @click="navigateTo('/scan')" class="nav-link">掃描新生</button>
             </li>
             <li class="nav-item">
-              <button @click="navigateTo('/partner')" class="nav-link">合作夥伴</button>
+              <button @click="navigateTo('/rules')" class="nav-link">遊戲規則</button>
             </li>
+            <!-- <li class="nav-item">
+              <button @click="navigateTo('/partner')" class="nav-link">合作夥伴</button>
+            </li> -->
             <li class="nav-item" v-if="!authStore.isLoggedIn">
               <button @click="navigateTo('/register')" class="nav-link">註冊帳號</button>
             </li>

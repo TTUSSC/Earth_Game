@@ -11,6 +11,7 @@ import RegisterView from '@/views/RegisterView.vue'
 import ScanView from '@/views/ScanView.vue'
 import ClubLoginView from '@/views/ClubLoginView.vue'
 import ClubView from '@/views/ClubView.vue'
+import RulesView from '@/views/RulesView.vue'
 
 const router = createRouter({
   linkActiveClass: 'active',
@@ -56,6 +57,11 @@ const router = createRouter({
       path: '/panel',
       name: 'panel',
       component: ClubView
+    },
+    {
+      path: '/rules',
+      name: 'rules',
+      component: RulesView
     },
     // error path
     {
