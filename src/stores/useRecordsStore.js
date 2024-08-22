@@ -17,7 +17,7 @@ export const useRecordsStore = defineStore('records', {
                     table: "records"
                 }
             });
-            this.data = response.data;
+            this.data = response.data.reverse();
             console.log('useRecordsStore:', this.data);
         },
         async query_record(club_email, user_email, is_ig) {

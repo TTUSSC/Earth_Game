@@ -30,7 +30,7 @@ const sendStamp = async () => {
     isLoading.value = true;
     console.log("sendStamp() update user data.");
     await usersStore.callAPI();
-    const user = await usersStore.get_user_by_email(scanEmail.value);
+    const user = await usersStore.get_user_by_email(scanEmail.value.toLowerCase());
     if (user.access_priv != true) {
         isError.value = true;
         pageMsg.value = "帳號已經兌換過抽獎券了";
@@ -44,7 +44,7 @@ const sendStamp = async () => {
     try {
         const formData = new FormData();
         formData.append("entry.1180634340", authStore.email);
-        formData.append("entry.1788223982", scanEmail.value);
+        formData.append("entry.1788223982", scanEmail.value.toLowerCase());
         formData.append("entry.914325063", scan_type.value == SCAN_IG);
 
         await
