@@ -32,6 +32,16 @@ const time_formatter = new Intl.DateTimeFormat('zh-TW', {
 <template>
     <div>
         <h1>社團後台</h1>
+        <div class="my-4">
+            <div class="card-btn card mb-2" @click="router.push({ name: 'scan' });">
+                <div class="card-body icon-link icon-link-hover"
+                    style="--bs-icon-link-transform: translate3d(0, -.25rem, 0);">
+                    趕快去幫新生蓋章！
+                    <i class="fa-solid fa-stamp bi ms-auto"></i>
+                </div>
+            </div>
+        </div>
+        <hr>
         <div class="mb-2">總點數：{{ authStore.records_len }}</div>
         <div>
             <div class="card my-2" v-for="i in computed(() => authStore.records).value" :key="i.created_time">

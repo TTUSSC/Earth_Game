@@ -22,7 +22,7 @@ const clubName = ref('');
 
 if (authStore.isLoggedIn && authStore.is_club) {
     // 切換成掃描
-    router.push({ name: 'scan' });
+    router.push({ name: 'panel' });
 } else {
     // 切換成社團登入表單
 }
@@ -52,7 +52,7 @@ const sendForm = async () => {
             console.log(authStore.name, authStore.email, authStore.is_club);
             clubName.value = authStore.name;
             clearForm();
-            router.push({ name: 'scan' });
+            router.push({ name: 'panel' });
         } else {
             isError.value = true;
             pageMsg.value = "帳號密碼錯誤";
