@@ -1,4 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
+
+import { useAuthStore } from '@/stores/useAuthStore'
+
 import HomeView from '../views/HomeView.vue'
 import RankView from '../views/RankView.vue'
 import StampView from '../views/StampView.vue'
@@ -66,6 +69,16 @@ const router = createRouter({
       component: NotFound
     }
   ]
+})
+
+router.beforeEach(async (to, from) => {
+  const authStore = useAuthStore();
+  if (!authStore.is_club && (to.name == "scan" || to.name == "panel")) return { name: 'club_login' }
+
+  // 社團權限
+  if (authStore.isLoggedIn && authStore.is_club) {
+    if (to.name == "club_login" || to.name == "home") return { name: 'panel' };
+  }
 })
 
 export default router

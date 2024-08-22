@@ -33,6 +33,19 @@ const time_formatter = new Intl.DateTimeFormat('zh-TW', {
     <div>
         <h1>社團後台</h1>
         <div class="my-4">
+            <div class="card-btn card mb-2" data-bs-toggle="collapse" data-bs-target="#collapseExample"
+                aria-expanded="false" aria-controls="collapseExample">
+                <div class="card-body icon-link icon-link-hover"
+                    style="--bs-icon-link-transform: translate3d(0, -.25rem, 0);">
+                    邀請朋友參加大地遊戲！
+                    <i class="fa-solid fa-share-from-square bi ms-auto"></i>
+                </div>
+            </div>
+            <div class="collapse mb-3 mx-auto" id="collapseExample">
+                <div class="card card-body">
+                    <createQRcode url="https://ttussc.github.io/Earth_Game" />
+                </div>
+            </div>
             <div class="card-btn card mb-2" @click="router.push({ name: 'scan' });">
                 <div class="card-body icon-link icon-link-hover"
                     style="--bs-icon-link-transform: translate3d(0, -.25rem, 0);">
