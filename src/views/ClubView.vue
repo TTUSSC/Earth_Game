@@ -81,3 +81,10 @@ const time_formatter = new Intl.DateTimeFormat('zh-TW', {
         </div>
     </div>
 </template>
+
+<style scoped>
+.card-btn:hover {
+    font-weight: bold;
+    cursor: pointer;
+}
+</style>

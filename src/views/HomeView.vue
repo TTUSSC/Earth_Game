@@ -26,16 +26,16 @@ const authStore = useAuthStore();
           <createQRcode url="https://ttussc.github.io/Earth_Game" />
         </div>
       </div>
-      <div v-show="!authStore.isLoggedIn" class="card-btn card mb-2" @click="router.push({ name: 'register' });">
-        <div class="card-body icon-link icon-link-hover" style="--bs-icon-link-transform: translate3d(0, -.25rem, 0);">
-          第一次加入點這裡註冊帳號！
-          <i class="fa-solid fa-right-to-bracket bi ms-auto"></i>
-        </div>
-      </div>
       <div v-show="!authStore.is_club" class="card-btn card mb-2" @click="router.push({ name: 'stamp' });">
         <div class="card-body icon-link icon-link-hover" style="--bs-icon-link-transform: translate3d(0, -.25rem, 0);">
           什麼？想蓋章？點這裡登入去蓋章！
           <i class="fa-solid fa-stamp bi ms-auto"></i>
+        </div>
+      </div>
+      <div v-show="!authStore.isLoggedIn" class="card-btn card mb-2" @click="router.push({ name: 'register' });">
+        <div class="card-body icon-link icon-link-hover" style="--bs-icon-link-transform: translate3d(0, -.25rem, 0);">
+          第一次加入點這裡註冊帳號！
+          <i class="fa-solid fa-right-to-bracket bi ms-auto"></i>
         </div>
       </div>
       <div v-show="!authStore.isLoggedIn || (authStore.isLoggedIn && authStore.is_club)" class="card-btn card mb-2"
