@@ -2,12 +2,12 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import RankView from '../views/RankView.vue'
 import StampView from '../views/StampView.vue'
-import ProfileView from '../views/ProfileView.vue'
 import Partner from '../views/PartnerView.vue'
 import NotFound from '../views/NotFound.vue'
 import RegisterView from '@/views/RegisterView.vue'
 import ScanView from '@/views/ScanView.vue'
 import ClubLoginView from '@/views/ClubLoginView.vue'
+import ClubView from '@/views/ClubView.vue'
 
 const router = createRouter({
   linkActiveClass: 'active',
@@ -49,15 +49,11 @@ const router = createRouter({
       name: 'scan',
       component: ScanView
     },
-    // {
-    //   path: '/user',
-    //   component: ProfileView
-    // },
     {
-      path: '/user/:id',
-      component: ProfileView
+      path: '/panel',
+      name: 'panel',
+      component: ClubView
     },
-
     // error path
     {
       path: '/404',
