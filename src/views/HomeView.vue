@@ -45,6 +45,12 @@ const authStore = useAuthStore();
           <i class="fa-solid fa-dungeon bi ms-auto"></i>
         </div>
       </div>
+      <div v-show="authStore.isLoggedIn" class="card-btn card mb-2" @click="authStore.logout(); router.push('/');">
+        <div class="card-body icon-link icon-link-hover" style="--bs-icon-link-transform: translate3d(0, -.25rem, 0);">
+          我要登出了
+          <i class="fa-solid fa-right-from-bracket bi ms-auto"></i>
+        </div>
+      </div>
     </section>
   </div>
 </template>

@@ -2,6 +2,7 @@
 import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/useAuthStore';
+import createQRcode from '@/components/createQRcode.vue';
 
 const router = useRouter();
 const authStore = useAuthStore();
@@ -51,6 +52,13 @@ const time_formatter = new Intl.DateTimeFormat('zh-TW', {
                     style="--bs-icon-link-transform: translate3d(0, -.25rem, 0);">
                     趕快去幫新生蓋章！
                     <i class="fa-solid fa-stamp bi ms-auto"></i>
+                </div>
+            </div>
+            <div class="card-btn card mb-2" @click="authStore.logout(); router.push('/');">
+                <div class="card-body icon-link icon-link-hover"
+                    style="--bs-icon-link-transform: translate3d(0, -.25rem, 0);">
+                    我要登出了
+                    <i class="fa-solid fa-right-from-bracket bi ms-auto"></i>
                 </div>
             </div>
         </div>

@@ -14,11 +14,17 @@
       <transition name="expand">
         <div v-show="isNavExpanded" class="navbar-collapse" id="navbarCollapse">
           <ul class="navbar-nav me-auto mb-2 mb-md-0">
-            <li class="nav-item">
+            <li class="nav-item" v-if="!authStore.is_club">
               <button @click="navigateTo('/')" class="nav-link">首頁</button>
             </li>
             <li class="nav-item" v-if="!authStore.is_club">
               <button @click="navigateTo('/stamp')" class="nav-link">活動蓋章</button>
+            </li>
+            <li class="nav-item" v-if="authStore.is_club">
+              <button @click="navigateTo('/panel')" class="nav-link">社團後台</button>
+            </li>
+            <li class="nav-item" v-if="authStore.is_club">
+              <button @click="navigateTo('/scan')" class="nav-link">掃描新生</button>
             </li>
             <li class="nav-item">
               <button @click="navigateTo('/partner')" class="nav-link">合作夥伴</button>
@@ -28,12 +34,6 @@
             </li>
             <li class="nav-item" v-if="!authStore.isLoggedIn">
               <button @click="navigateTo('/club_login')" class="nav-link">社團登入</button>
-            </li>
-            <li class="nav-item" v-if="authStore.is_club">
-              <button @click="navigateTo('/panel')" class="nav-link">社團後台</button>
-            </li>
-            <li class="nav-item" v-if="authStore.is_club">
-              <button @click="navigateTo('/scan')" class="nav-link">掃描新生</button>
             </li>
           </ul>
         </div>
