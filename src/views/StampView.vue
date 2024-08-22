@@ -158,7 +158,7 @@ const time_formatter = new Intl.DateTimeFormat('zh-TW', {
         <div v-if="authStore.isLoggedIn && authStore.access_priv" class="mx-auto" :style="{
           maxHeight: remainingHeight + `px`
         }">
-          <createQRcode :url="account.trim()" />
+          <createQRcode :url="account.trim().toLowerCase()" />
         </div>
         <div v-else-if="authStore.isLoggedIn && !authStore.access_priv">
           兌換完抽獎券，帳號已經被鎖定了喔～
