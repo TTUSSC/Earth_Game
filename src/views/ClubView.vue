@@ -1,8 +1,15 @@
 <script setup>
-import { ref, computed } from 'vue';
+import { computed } from 'vue';
+import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/useAuthStore';
 
+const router = useRouter();
 const authStore = useAuthStore();
+
+if (!authStore.isLoggedIn || !authStore.is_club) {
+    router.push('club_login');
+}
+
 authStore.get_club_records();
 
 const time_formatter = new Intl.DateTimeFormat('zh-TW', {
