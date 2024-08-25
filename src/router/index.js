@@ -21,58 +21,91 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: HomeView
+      component: HomeView,
+      meta: {
+        title: "首頁"
+      }
     },
     {
       path: '/stamp',
       name: 'stamp',
-      component: StampView
+      component: StampView,
+      meta: {
+        title: "活動蓋章"
+      }
     },
     {
       path: '/rank',
       name: 'rank',
-      component: RankView
+      component: RankView,
+      meta: {
+        title: "排行"
+      }
     },
     {
       path: '/partner',
       name: 'partner',
-      component: Partner
+      component: Partner,
+      meta: {
+        title: "合作夥伴"
+      }
     },
     {
       path: '/register',
       name: 'register',
-      component: RegisterView
+      component: RegisterView,
+      meta: {
+        title: "註冊"
+      }
     },
     {
       path: '/club_login',
       name: 'club_login',
-      component: ClubLoginView
+      component: ClubLoginView,
+      meta: {
+        title: "登入"
+      }
     },
     {
       path: '/scan',
       name: 'scan',
-      component: ScanView
+      component: ScanView,
+      meta: {
+        title: "掃描蓋章"
+      }
     },
     {
       path: '/panel',
       name: 'panel',
-      component: ClubView
+      component: ClubView,
+      meta: {
+        title: "社團後台"
+      }
     },
     {
       path: '/rules',
       name: 'rules',
-      component: RulesView
+      component: RulesView,
+      meta: {
+        title: "遊戲規則"
+      }
     },
     // error path
     {
       path: '/404',
       name: 'NotFound',
-      component: NotFound
+      component: NotFound,
+      meta: {
+        title: "404 找不到東西啦~"
+      }
     },
     {
       path: '/:pathMatch(.*)*',
       name: 'NotFound',
-      component: NotFound
+      component: NotFound,
+      meta: {
+        title: "404 找不到東西啦~"
+      }
     }
   ]
 })

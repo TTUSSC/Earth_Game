@@ -1,14 +1,27 @@
-<script>
-// import { RouterLink, RouterView } from 'vue-router'
-// import ThemeSwicher from './components/ThemeSwicher.vue';
+<script setup>
+import { ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
 import NavBar from './components/NavBar.vue'
 
-export default {
-  components: {
-    // ThemeSwicher,
-    NavBar
-  }
+const usePageTitle = () => {
+  const baseTitle = 'TTU社團博覽會';
+  const pageTitle = ref(baseTitle);
+
+  const route = useRoute();
+
+  watch(
+    () => route.meta.title,
+    (newTitle) => {
+      pageTitle.value = newTitle ? `${baseTitle}｜${newTitle}` : baseTitle
+      document.title = pageTitle.value
+    },
+    { immediate: true }
+  );
+
+  return pageTitle;
 }
+
+usePageTitle();
 </script>
 
 <template>
