@@ -45,13 +45,37 @@ const authStore = useAuthStore();
           <i class="fa-solid fa-dungeon bi ms-auto"></i>
         </div>
       </div>
-      <div v-show="authStore.isLoggedIn" class="card-btn card mb-2" @click="authStore.logout(); router.push('/');">
-        <div class="card-body icon-link icon-link-hover" style="--bs-icon-link-transform: translate3d(0, -.25rem, 0);">
+      <div v-show="authStore.isLoggedIn" class="card-btn card mb-2">
+        <div class="card-body icon-link icon-link-hover" style="--bs-icon-link-transform: translate3d(0, -.25rem, 0);"
+          data-bs-toggle="modal" data-bs-target="#logoutModal">
           我要登出了
           <i class="fa-solid fa-right-from-bracket bi ms-auto"></i>
         </div>
       </div>
     </section>
+
+    <!-- Modal -->
+    <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5">登出確認</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p>確認要登出帳號嗎？</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary mx-2" data-bs-dismiss="modal">取消</button>
+            <button type="button" class="btn btn-danger mx-2" data-bs-dismiss="modal"
+              @click="authStore.logout(); router.push('/');">
+              登出
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
 <style scoped>
