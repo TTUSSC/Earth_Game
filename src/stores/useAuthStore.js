@@ -86,8 +86,12 @@ export const useAuthStore = defineStore('auth', {
             console.log('logout successed :p');
         },
         async update_auth() {
+            /**
+             * 更新使用者資料 usersStore
+             */
+            if (!this.isLoggedIn) return;
             const usersStore = useUserStore();
-            usersStore.callAPI();
+            await usersStore.callAPI();
             try {
                 const user = await usersStore.get_user_by_email(this.email);
                 console.log('user:', user);
@@ -103,6 +107,10 @@ export const useAuthStore = defineStore('auth', {
                     this.department = user["department"];
                     this.email = user["email"];
                     this.phone = user["phone_number"];
+
+                    if (!this.is_club) this.get_user_records();
+                    else this.get_club_records();
+
                     console.log("Update auth data successful!");
                 }
             } catch (error) {
@@ -117,6 +125,8 @@ export const useAuthStore = defineStore('auth', {
         records_len: (state) => {
             if (state.records == null) return 0;
             else return state.records.length;
-        }
+        },
+        get_access_priv: (state) => state.access_priv,
+        get_records: (state) => state.records
     }
 })
