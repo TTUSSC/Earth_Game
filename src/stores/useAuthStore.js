@@ -15,6 +15,7 @@ export const useAuthStore = defineStore('auth', {
 
         token: null,
         access_priv: false,
+        is_staff: false,
         records: null,
     }),
     actions: {
@@ -63,6 +64,8 @@ export const useAuthStore = defineStore('auth', {
 
             if (club) {
                 this.token = club["club_id"];
+                this.access_priv = club["access_priv"];
+                this.is_staff = club["is_staff"];
                 this.is_club = true;
 
                 this.name = club["name"];
@@ -107,6 +110,39 @@ export const useAuthStore = defineStore('auth', {
                     this.department = user["department"];
                     this.email = user["email"];
                     this.phone = user["phone_number"];
+
+                    if (!this.is_club) this.get_user_records();
+                    else this.get_club_records();
+
+                    console.log("Update auth data successful!");
+                }
+            } catch (error) {
+                console.error('Update auth data error:', error);
+                return false;
+            }
+
+        },
+        async update_club_auth() {
+            /**
+             * 更新使用者資料 usersStore
+             */
+            if (!this.isLoggedIn) return;
+            const clubsStore = useClubsStore();
+            await clubsStore.callAPI();
+            try {
+                const club = await clubsStore.get_club_by_email(this.email);
+                console.log('user:', club);
+
+                if (!club) {
+                    console.log('Update auth data failed, unknown account:', this.email);
+                } else {
+                    this.token = club["club_id"];
+                    this.access_priv = club["access_priv"];
+                    this.is_staff = club["is_staff"];
+                    this.is_club = true;
+
+                    this.name = club["name"];
+                    this.email = club["email"];
 
                     if (!this.is_club) this.get_user_records();
                     else this.get_club_records();

@@ -21,6 +21,7 @@ const router = useRouter();
 // check login inro
 onMounted(() => {
     if (!authStore.isLoggedIn || !authStore.is_club) router.push({ name: 'club_login' });
+    authStore.update_club_auth();
 })
 
 const isLoading = ref(false);
@@ -156,6 +157,10 @@ const handleScanSuccess = async (data) => {
     if (scan_type.value == SCAN_IG || scan_type.value == SCAN_STAMP)
         await sendStamp();
     else {
+        if (!authStore.is_staff) {
+            isError.value = true;
+            pageMsg.value = '你沒有鎖定帳號的權限';
+        }
         await exangeStamp();
     }
     waiting.value = false;
@@ -196,8 +201,8 @@ const type_name = computed(() => {
                     :class="{ active: scan_type == SCAN_IG }">
                     IG
                 </button>
-                <button class="d-grid col mx-2 btn btn-outline-success" @click="scan_type = SCAN_LOCK"
-                    :class="{ active: scan_type == SCAN_LOCK }">
+                <button v-if="authStore.is_staff" class="d-grid col mx-2 btn btn-outline-success"
+                    @click="scan_type = SCAN_LOCK" :class="{ active: scan_type == SCAN_LOCK }">
                     鎖定
                 </button>
             </div>
