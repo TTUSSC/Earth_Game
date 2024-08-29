@@ -118,6 +118,10 @@ router.beforeEach(async (to, from) => {
   if (authStore.isLoggedIn && authStore.is_club) {
     if (to.name == "club_login" || to.name == "home") return { name: 'panel' };
   }
+
+  if (from == 'panel' && to == 'scan') {
+    if (!authStore.access_priv) return { name: 'panel' };
+  }
 })
 
 export default router
