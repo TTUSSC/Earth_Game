@@ -1,4 +1,5 @@
 <script setup>
+import { sha256 } from '@/assets/sha256';
 import { ref, computed } from 'vue';
 import { useAuthStore } from '@/stores/useAuthStore';
 import { useClubsStore } from '@/stores/useClubsStore';
@@ -44,7 +45,8 @@ const sendForm = async () => {
     isLoading.value = true;
     try {
         const isValid = await validForm();
-        await authStore.club_login(email.value, password.value);
+        console.log('hashed password:', sha256(password.value));
+        await authStore.club_login(email.value, sha256(password.value));
         if (isValid && authStore.isLoggedIn && authStore.is_club) {
             console.log('Club login successfully')
             isError.value = false;

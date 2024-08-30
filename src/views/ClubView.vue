@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/useAuthStore';
 import createQRcode from '@/components/createQRcode.vue';
@@ -65,7 +65,9 @@ const time_formatter = new Intl.DateTimeFormat('zh-TW', {
         </div>
         <hr>
         <div class="mb-2">總點數：{{ authStore.records_len }}</div>
-        <div>
+        <div class="overflow-auto" :style="{
+            maxHeight: + 400 + `px`
+        }">
             <div class="card my-2" v-for="i in computed(() => authStore.records).value" :key="i.created_time">
                 <div class="card-header d-flex align-items-center">
                     <span class="badge rounded-pill"
