@@ -245,9 +245,33 @@ const clearForm = () => {
                     <input type="checkbox" class="form-check-input" :class="{ 'is-invalid': !checkError }"
                         v-model="formCheck" id="gridCheck" required>
                     <label class="form-check-label" for="gridCheck">
-                        同意資料使用條款
+                        同意<a data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false"
+                            aria-controls="collapseExample">資料使用條款</a>
                     </label>
                     <div class="invalid-feedback">{{ errors.check }}</div>
+                </div>
+            </div>
+            <div class="collapse mb-3 mx-auto" id="collapseExample">
+                <div class="card card-body">
+                    <h6>資料使用條款</h6>
+                    <p>
+                        大同大學社團博覽會（以下簡稱「本活動」）的「大地遊戲集點活動」旨在
+                        促進參與者對各社團的了解與興趣。參與者需透過系統蓋章和儲存資料來收
+                        集點數。
+                    </p>
+                    <p>
+                        為了參加本活動，我們需要收集您的個人資料，包括但不限於姓名、
+                        聯絡電話、電子郵件地址等（以下簡稱「個人資料」）。這些資料將用於活
+                        動管理和參與者聯絡。
+                    </p>
+                    <p>
+                        收集的個人資料僅用於：管理和統計參與情況、向您發送活動相關的通知、
+                        獎品信息及其他必要的溝通。
+                    </p>
+                    <p>
+                        您有權查詢我們持有的您的個人資料，並要求更正或刪除不正確的資料。
+                        您可隨時撤回對個人資料使用的同意，這可能會影響您參與本活動的資格。
+                    </p>
                 </div>
             </div>
             <div class="col-6 d-grid mx-auto">
