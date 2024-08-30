@@ -17,7 +17,7 @@ const authStore = useAuthStore();
       <div class="card-btn card mb-2" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false"
         aria-controls="collapseExample">
         <div class="card-body icon-link icon-link-hover" style="--bs-icon-link-transform: translate3d(0, -.25rem, 0);">
-          邀請朋友參加大地遊戲！
+          邀請朋友！
           <i class="fa-solid fa-share-from-square bi ms-auto"></i>
         </div>
       </div>
@@ -28,26 +28,26 @@ const authStore = useAuthStore();
       </div>
       <div class="card-btn card mb-2" @click="router.push({ name: 'rules' });">
         <div class="card-body icon-link icon-link-hover" style="--bs-icon-link-transform: translate3d(0, -.25rem, 0);">
-          了解遊戲規則
+          遊戲規則
           <i class="fa-solid fa-scale-balanced bi ms-auto"></i>
         </div>
       </div>
       <div v-show="!authStore.is_club" class="card-btn card mb-2" @click="router.push({ name: 'stamp' });">
         <div class="card-body icon-link icon-link-hover" style="--bs-icon-link-transform: translate3d(0, -.25rem, 0);">
-          點這裡登入去蓋章！
+          登入蓋章
           <i class="fa-solid fa-stamp bi ms-auto"></i>
         </div>
       </div>
       <div v-show="!authStore.isLoggedIn" class="card-btn card mb-2" @click="router.push({ name: 'register' });">
         <div class="card-body icon-link icon-link-hover" style="--bs-icon-link-transform: translate3d(0, -.25rem, 0);">
-          點這裡註冊帳號！
+          註冊帳號
           <i class="fa-solid fa-right-to-bracket bi ms-auto"></i>
         </div>
       </div>
       <div v-show="!authStore.isLoggedIn || (authStore.isLoggedIn && authStore.is_club)" class="card-btn card mb-2"
         @click="router.push({ name: 'club_login' });">
         <div class="card-body icon-link icon-link-hover" style="--bs-icon-link-transform: translate3d(0, -.25rem, 0);">
-          我是社團，要走秘密通道~
+          社團秘密通道
           <i class="fa-solid fa-dungeon bi ms-auto"></i>
         </div>
       </div>
