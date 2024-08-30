@@ -26,6 +26,12 @@ const authStore = useAuthStore();
           <createQRcode url="https://ttussc.github.io/Earth_Game" />
         </div>
       </div>
+      <div class="card-btn card mb-2" @click="router.push({ name: 'rules' });">
+        <div class="card-body icon-link icon-link-hover" style="--bs-icon-link-transform: translate3d(0, -.25rem, 0);">
+          了解遊戲規則
+          <i class="fa-solid fa-scale-balanced bi ms-auto"></i>
+        </div>
+      </div>
       <div v-show="!authStore.is_club" class="card-btn card mb-2" @click="router.push({ name: 'stamp' });">
         <div class="card-body icon-link icon-link-hover" style="--bs-icon-link-transform: translate3d(0, -.25rem, 0);">
           點這裡登入去蓋章！
