@@ -155,10 +155,10 @@ const time_formatter = new Intl.DateTimeFormat('zh-TW', {
     <div class="tab-content" id="myTabContent" ref="tabContent">
       <div class="tab-pane fade show active" id="qrcode-tab-pane" role="tabpanel" aria-labelledby="qrcode-tab"
         tabindex="0">
-        <div v-if="authStore.isLoggedIn && authStore.access_priv" class="mx-auto" :style="{
+        <div v-if="authStore.isLoggedIn && authStore.access_priv" class="d-flex" :style="{
           maxHeight: remainingHeight + `px`
         }">
-          <createQRcode :url="account.trim().toLowerCase()" />
+          <createQRcode class="mx-auto" :url="account.trim().toLowerCase()" :height="remainingHeight" />
         </div>
         <div v-else-if="authStore.isLoggedIn && !authStore.access_priv">
           兌換完抽獎券，帳號已經被鎖定了喔～
