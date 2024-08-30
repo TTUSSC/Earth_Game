@@ -12,6 +12,7 @@ import ScanView from '@/views/ScanView.vue'
 import ClubLoginView from '@/views/ClubLoginView.vue'
 import ClubView from '@/views/ClubView.vue'
 import RulesView from '@/views/RulesView.vue'
+import ClubRegisterView from '@/views/ClubRegisterView.vue'
 
 const router = createRouter({
   linkActiveClass: 'active',
@@ -88,6 +89,14 @@ const router = createRouter({
       component: RulesView,
       meta: {
         title: "遊戲規則"
+      }
+    },
+    {
+      path: '/club_register',
+      name: 'club_register',
+      component: ClubRegisterView,
+      meta: {
+        title: "社團帳號註冊"
       }
     },
     // error path
