@@ -34,7 +34,7 @@ const authStore = useAuthStore();
       </div>
       <div v-show="!authStore.is_club" class="card-btn card mb-2" @click="router.push({ name: 'stamp' });">
         <div class="card-body icon-link icon-link-hover" style="--bs-icon-link-transform: translate3d(0, -.25rem, 0);">
-          登入蓋章
+          攤位遊戲蓋章
           <i class="fa-solid fa-stamp bi ms-auto"></i>
         </div>
       </div>
