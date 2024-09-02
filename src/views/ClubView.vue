@@ -32,7 +32,9 @@ const time_formatter = new Intl.DateTimeFormat('zh-TW', {
 
 <template>
     <div>
-        <h1>社團後台</h1>
+        <h1>
+            {{ authStore.name }}
+        </h1>
         <div class="my-4">
             <div class="card-btn card mb-2" data-bs-toggle="collapse" data-bs-target="#collapseExample"
                 aria-expanded="false" aria-controls="collapseExample">
