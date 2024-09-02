@@ -1,11 +1,14 @@
 <script setup>
 import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
+import axios from 'axios';
+import { useClubsStore } from '@/stores/useClubsStore';
 import { useAuthStore } from '@/stores/useAuthStore';
 import { sha256 } from '@/assets/sha256';
 
 const router = useRouter();
 const authStore = useAuthStore();
+const clubsStore = useClubsStore();
 
 let name = ref("");
 let email = ref("");
@@ -31,7 +34,7 @@ const sendForm = async () => {
     was_validated.value = true;
     isLoading.value = true;
     try {
-        const isValid = true;
+        const isValid = await validData();
         if (isValid) {
             console.log('prepare form data');
             const formData = new FormData();
@@ -39,19 +42,34 @@ const sendForm = async () => {
             formData.append("entry.478569220", email.value.toLowerCase());
             formData.append("entry.433170047", password.value);
             formData.append("entry.504494998", text.value);
-            console.log('開始發送請求');
+            console.log('開始發送社團註冊請求');
             await fetch('https://docs.google.com/forms/u/2/d/e/1FAIpQLSfTqC-Z6ByQYiYedMlCGtwsJ1jdZr8Ci5_QtkCunPgNEoVcbA/formResponse', {
                 method: 'POST',
                 mode: 'no-cors',
                 body: formData
             });
-            console.log('Form submitted successfully')
+            console.log('社團註冊送出成功')
             console.log("Submitted email:", email.value);
+
+            console.log("開始檢查註冊狀態");
+            let club = null;
+            // 嘗試 5 次
+            for (let i = 0; i < 5; i++) {
+                console.log(`Attempt ${i + 1} to fetch user data`);
+                await clubsStore.callAPI();
+                club = await clubsStore.get_club_by_email(email.value);
+                console.log("API response:", club);
+                if (club) {
+                    console.log("i=", i, "found updated user:", club)
+                    isError.value = false;
+                    break;
+                } else isError.value = true;
+            }
 
             if (!isError.value) {
                 pageMsg.value = "註冊成功！";
                 console.log("trying to login.");
-                //await userStore.callAPI();
+                await clubsStore.callAPI();
                 await authStore.club_login(email.value, password.value);
                 console.log('name:', authStore.name);
                 console.log('email:', authStore.email);
@@ -66,7 +84,7 @@ const sendForm = async () => {
 
         } else {
             isLoading.value = false;
-            console.log("驗證失敗或未勾選同意條款")
+            console.log("驗證失敗")
         }
     } catch (error) {
         isError.value = true;
@@ -107,6 +125,39 @@ const textError = computed(() => validateField('text', text.value, { required: f
 const isFormValid = computed(() => {
     return nameError.value && emailError.value && passwordError.value && textError.value;
 });
+
+const validData = async () => {
+    let url = "https://script.google.com/macros/s/AKfycbwQGQY4CAhuYzI5AoAzsbWx4-aXTAONiZXpXq7Ue3MkojbgbvuKnDWXLk8wDZJLyx7P_g/exec";
+
+    // data 驗證
+    try {
+        const response = await axios.get(url, {
+            params: {
+                table: "clubs"
+            }
+        });
+
+        console.log("get clubs data:");
+        console.log(response.data);
+
+        const data = response.data;
+        for (var i = 0; i < data.length; i++) {
+            if (data[i]["email"] === email.value) {
+                console.log("data conflict.");
+                isError.value = true;
+                pageMsg.value = "電子信箱或電話號碼已經被註冊過了。";
+                was_validated.value = false;
+                return false; // 衝突，不通過
+            }
+        }
+
+        console.log("data valid passed.");
+        return true; // 通過
+    } catch (error) {
+        console.error("Error validating form:", error);
+        return false; // 出錯時不通過
+    }
+}
 
 // 清空表單的函數
 const clearForm = () => {
