@@ -95,5 +95,10 @@ export const useRecordsStore = defineStore('records', {
             return list;
         }
     },
-    getters: {}
+    getters: {
+        data_len: (state) => {
+            if (state.data == null) return 0;
+            else return state.data.length;
+        },
+    }
 })

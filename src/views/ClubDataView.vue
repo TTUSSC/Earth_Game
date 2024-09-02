@@ -42,6 +42,9 @@ onMounted(() => {
     calculateRemainingHeight();
     window.addEventListener('resize', calculateRemainingHeight);
 });
+
+const record_len = computed(() => recordsStore.data == null ? 0 : recordsStore.data.length);
+const persent = computed(() => Math.round(authStore.records_len / record_len.value * 10000) / 100);
 </script>
 <template>
     <div ref="content">
@@ -52,12 +55,11 @@ onMounted(() => {
         <div class="my-2">總點數：{{ authStore.records_len }}</div>
         <div class="progress my-3" role="progressbar" aria-label="Example with label" aria-valuenow="25"
             aria-valuemin="0" aria-valuemax="100">
-            <div class="progress-bar"
-                :style="{ 'width': authStore.records_len / recordsStore.data.length * 100 + `%` }">
-                {{ Math.round(authStore.records_len / recordsStore.data.length * 10000) / 100 }} %
+            <div class="progress-bar" :style="{ 'width': persent + `%` }">
+                {{ persent }} %
             </div>
         </div>
-        <div class="mb-2">攤位參與人數佔總參與人數的 {{ Math.round(authStore.records_len / recordsStore.data.length * 10000) / 100 }}
+        <div class="mb-2">攤位參與人數佔總參與人數的 {{ persent }}
             %</div>
         <div class="overflow-auto my-2" :style="{
             maxHeight: remainingHeight - 140 + `px`
