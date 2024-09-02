@@ -14,6 +14,7 @@ import ClubView from '@/views/ClubView.vue'
 import RulesView from '@/views/RulesView.vue'
 import ClubRegisterView from '@/views/ClubRegisterView.vue'
 import ClubChangePasswordView from '@/views/ClubChangePasswordView.vue'
+import ClubDataView from '@/views/ClubDataView.vue'
 
 const router = createRouter({
   linkActiveClass: 'active',
@@ -104,6 +105,14 @@ const router = createRouter({
       path: '/club/edit',
       name: 'club_edit',
       component: ClubChangePasswordView,
+      meta: {
+        title: "註冊社團帳號"
+      }
+    },
+    {
+      path: '/club/records',
+      name: 'club_records',
+      component: ClubDataView,
       meta: {
         title: "註冊社團帳號"
       }
