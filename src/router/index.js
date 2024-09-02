@@ -64,7 +64,7 @@ const router = createRouter({
       name: 'club_login',
       component: ClubLoginView,
       meta: {
-        title: "登入"
+        title: "社團登入"
       }
     },
     {
@@ -96,7 +96,7 @@ const router = createRouter({
       name: 'club_register',
       component: ClubRegisterView,
       meta: {
-        title: "社團帳號註冊"
+        title: "註冊社團帳號"
       }
     },
     // error path
