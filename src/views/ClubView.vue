@@ -45,7 +45,7 @@ authStore.get_club_records();
                 <div class="card-body icon-link icon-link-hover"
                     style="--bs-icon-link-transform: translate3d(0, -.25rem, 0);">
                     蓋章紀錄
-                    <i class="fa-solid fa-stamp bi ms-auto"></i>
+                    <i class="fa-solid fa-database bi ms-auto"></i>
                 </div>
             </div>
             <div v-if="authStore.access_priv" class="card-btn card mb-2" @click="router.push({ name: 'club_edit' });">
