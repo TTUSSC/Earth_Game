@@ -50,7 +50,7 @@ const sendForm = async () => {
             const formData = new FormData();
             formData.append("entry.1657837598", name.value);
             formData.append("entry.478569220", email.value.toLowerCase());
-            formData.append("entry.433170047", password.value);
+            formData.append("entry.433170047", password_raw.value == "" ? "" : password.value);
             formData.append("entry.504494998", text.value);
             console.log('開始發送社團註冊請求');
             await fetch('https://docs.google.com/forms/u/2/d/e/1FAIpQLSfTqC-Z6ByQYiYedMlCGtwsJ1jdZr8Ci5_QtkCunPgNEoVcbA/formResponse', {
@@ -153,19 +153,22 @@ const clearForm = () => {
         <form class="row g-3 my-3 needs-validation" :class="{ 'was-validated': was_validated }"
             @submit.prevent="sendForm" novalidate>
             <div class="col-md-6">
+                <label for="" class="form-label">社團名稱</label>
                 <input type="text" v-model="name" class="form-control" :class="{ 'is-invalid': !nameError }" name="name"
                     id="name" placeholder="社團名稱" required>
                 <div class="invalid-feedback">{{ errors.name }}</div>
             </div>
             <div class="col-md-6">
-                <input type="text" v-model="password_raw" class="form-control" :class="{ 'is-invalid': !passwordError }"
-                    name="password" id="password" placeholder="密碼" required>
-                <div class="invalid-feedback">{{ errors.password }}</div>
-            </div>
-            <div class="col-md-6">
+                <label for="" class="form-label">蓋章的字</label>
                 <input type="text" v-model="text" class="form-control" :class="{ 'is-invalid': !textError }"
                     name="password" id="text" placeholder="蓋章的字">
                 <div class="invalid-feedback">{{ errors.text }}</div>
+            </div>
+            <div class="col-md-6">
+                <label for="" class="form-label">密碼</label>
+                <input type="text" v-model="password_raw" class="form-control" :class="{ 'is-invalid': !passwordError }"
+                    name="password" id="password" placeholder="密碼" required>
+                <div class="invalid-feedback">{{ errors.password }}</div>
             </div>
             <div class="col-6 d-grid mx-auto">
                 <button type="submit" class="btn btn-primary" :disabled="!isFormValid || isLoading">{{ isLoading ?
