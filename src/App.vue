@@ -4,7 +4,7 @@ import { useRoute } from 'vue-router'
 import NavBar from './components/NavBar.vue'
 
 const usePageTitle = () => {
-  const baseTitle = 'TTU社團博覽會';
+  const baseTitle = 'TTU 社團博覽會';
   const pageTitle = ref(baseTitle);
 
   const route = useRoute();
