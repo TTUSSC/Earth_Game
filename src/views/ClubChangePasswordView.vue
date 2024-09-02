@@ -1,7 +1,6 @@
 <script setup>
 import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
-import axios from 'axios';
 import { useClubsStore } from '@/stores/useClubsStore';
 import { useAuthStore } from '@/stores/useAuthStore';
 import { sha256 } from '@/assets/sha256';
@@ -9,6 +8,13 @@ import { sha256 } from '@/assets/sha256';
 const router = useRouter();
 const authStore = useAuthStore();
 const clubsStore = useClubsStore();
+
+if (!authStore.isLoggedIn || !authStore.is_club) {
+    console.log(authStore.isLoggedIn, authStore.is_club);
+    console.log(authStore);
+    console.warn("社團沒有登入");
+    router.push({ name: 'club_login' });
+}
 
 let name = ref("");
 let email = ref("");
@@ -28,13 +34,17 @@ const errors = ref({
     text: ''
 });
 
+name.value = authStore.name;
+email.value = authStore.email;
+text.value = authStore.stamp_text;
+
 var was_validated = ref(false);
 
 const sendForm = async () => {
     was_validated.value = true;
     isLoading.value = true;
     try {
-        const isValid = await validData();
+        const isValid = true;
         if (isValid) {
             console.log('prepare form data');
             const formData = new FormData();
@@ -117,47 +127,13 @@ const validateField = (field, value, rules) => {
 
 // 表單驗證
 const nameError = computed(() => validateField('name', name.value, { required: true }));
-const emailError = computed(() => validateField('email', email.value, { required: true, pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/ }));
-const passwordError = computed(() => validateField('password', password_raw.value, { required: true }));
+const passwordError = computed(() => validateField('password', password_raw.value, { required: false }));
 const textError = computed(() => validateField('text', text.value, { required: false }));
 
 // 檢查整個表單是否有效
 const isFormValid = computed(() => {
-    return nameError.value && emailError.value && passwordError.value && textError.value;
+    return nameError.value && passwordError.value && textError.value;
 });
-
-const validData = async () => {
-    let url = "https://script.google.com/macros/s/AKfycbwQGQY4CAhuYzI5AoAzsbWx4-aXTAONiZXpXq7Ue3MkojbgbvuKnDWXLk8wDZJLyx7P_g/exec";
-
-    // data 驗證
-    try {
-        const response = await axios.get(url, {
-            params: {
-                table: "clubs"
-            }
-        });
-
-        console.log("get clubs data:");
-        console.log(response.data);
-
-        const data = response.data;
-        for (var i = 0; i < data.length; i++) {
-            if (data[i]["email"] === email.value) {
-                console.log("data conflict.");
-                isError.value = true;
-                pageMsg.value = "電子信箱或電話號碼已經被註冊過了。";
-                was_validated.value = false;
-                return false; // 衝突，不通過
-            }
-        }
-
-        console.log("data valid passed.");
-        return true; // 通過
-    } catch (error) {
-        console.error("Error validating form:", error);
-        return false; // 出錯時不通過
-    }
-}
 
 // 清空表單的函數
 const clearForm = () => {
@@ -169,7 +145,7 @@ const clearForm = () => {
 </script>
 <template>
     <div>
-        <h1>社團帳號註冊</h1>
+        <h1>修改社團帳號資料</h1>
         <!-- 顯示註冊結果訊息 -->
         <div v-if="pageMsg" class="mt-3" :class="['alert', isError ? 'alert-danger' : 'alert-success']" role="alert">
             {{ pageMsg }}
@@ -182,13 +158,8 @@ const clearForm = () => {
                 <div class="invalid-feedback">{{ errors.name }}</div>
             </div>
             <div class="col-md-6">
-                <input type="email" v-model="email" class="form-control" :class="{ 'is-invalid': !emailError }"
-                    name="email" id="email" placeholder="電子郵件" required>
-                <div class="invalid-feedback">{{ errors.email }}</div>
-            </div>
-            <div class="col-md-6">
-                <input type="password" v-model="password_raw" class="form-control"
-                    :class="{ 'is-invalid': !passwordError }" name="password" id="password" placeholder="密碼" required>
+                <input type="text" v-model="password_raw" class="form-control" :class="{ 'is-invalid': !passwordError }"
+                    name="password" id="password" placeholder="密碼" required>
                 <div class="invalid-feedback">{{ errors.password }}</div>
             </div>
             <div class="col-md-6">
@@ -198,7 +169,7 @@ const clearForm = () => {
             </div>
             <div class="col-6 d-grid mx-auto">
                 <button type="submit" class="btn btn-primary" :disabled="!isFormValid || isLoading">{{ isLoading ?
-                    '提交中...' : '註冊' }}</button>
+                    '提交中...' : '送出' }}</button>
             </div>
         </form>
 

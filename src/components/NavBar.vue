@@ -21,7 +21,7 @@
               <button @click="navigateTo('/stamp')" class="nav-link">活動蓋章</button>
             </li>
             <li class="nav-item" v-if="authStore.is_club">
-              <button @click="navigateTo('/panel')" class="nav-link">社團後台</button>
+              <button @click="navigateTo('/club/panel')" class="nav-link">社團後台</button>
             </li>
             <li class="nav-item" v-if="authStore.is_club">
               <button @click="navigateTo('/scan')" class="nav-link">掃描新生</button>
@@ -36,7 +36,7 @@
               <button @click="navigateTo('/register')" class="nav-link">註冊帳號</button>
             </li>
             <li class="nav-item" v-if="!authStore.isLoggedIn">
-              <button @click="navigateTo('/club_login')" class="nav-link">社團登入</button>
+              <button @click="navigateTo('/club/login')" class="nav-link">社團登入</button>
             </li>
           </ul>
         </div>

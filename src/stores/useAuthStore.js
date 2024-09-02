@@ -10,7 +10,7 @@ export const useAuthStore = defineStore('auth', {
         department: null,
         email: null,
         phone: null,
-        stamps: null,
+        stamp_text: null,
         is_club: false,
 
         token: null,
@@ -70,6 +70,7 @@ export const useAuthStore = defineStore('auth', {
 
                 this.name = club["name"];
                 this.email = club["email"];
+                this.stamp_text = club["text_on_stamp"];
                 console.log("club login successful!");
             } else {
                 console.log('login failed :(');
@@ -143,6 +144,7 @@ export const useAuthStore = defineStore('auth', {
 
                     this.name = club["name"];
                     this.email = club["email"];
+                    this.stamp_text = club["text_on_stamp"];
 
                     if (!this.is_club) this.get_user_records();
                     else this.get_club_records();

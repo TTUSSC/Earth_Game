@@ -8,7 +8,7 @@ const router = useRouter();
 const authStore = useAuthStore();
 
 if (!authStore.isLoggedIn || !authStore.is_club) {
-    router.push('club_login');
+    router.push({ name: 'club_login' });
 }
 
 authStore.get_club_records();
@@ -53,6 +53,13 @@ const time_formatter = new Intl.DateTimeFormat('zh-TW', {
                 <div class="card-body icon-link icon-link-hover"
                     style="--bs-icon-link-transform: translate3d(0, -.25rem, 0);">
                     趕快去幫新生蓋章！
+                    <i class="fa-solid fa-stamp bi ms-auto"></i>
+                </div>
+            </div>
+            <div v-if="authStore.access_priv" class="card-btn card mb-2" @click="router.push({ name: 'club_edit' });">
+                <div class="card-body icon-link icon-link-hover"
+                    style="--bs-icon-link-transform: translate3d(0, -.25rem, 0);">
+                    修改社團帳號資料
                     <i class="fa-solid fa-stamp bi ms-auto"></i>
                 </div>
             </div>
