@@ -1,10 +1,14 @@
 <script setup>
-import { computed } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/useAuthStore';
+import { useRecordsStore } from '@/stores/useRecordsStore';
 
 const router = useRouter();
 const authStore = useAuthStore();
+const recordsStore = useRecordsStore();
+
+recordsStore.callAPI();
 
 if (!authStore.isLoggedIn || !authStore.is_club) {
     router.push({ name: 'club_login' });
@@ -22,15 +26,41 @@ const time_formatter = new Intl.DateTimeFormat('zh-TW', {
     // second: '2-digit',
     hour12: false
 });
+
+const content = ref();
+const remainingHeight = ref(0);
+const calculateRemainingHeight = () => {
+    if (content.value) {
+        const tabContentRect = content.value.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
+        remainingHeight.value = windowHeight - tabContentRect.top - 110;
+        console.log("剩餘高度：", remainingHeight.value);
+    }
+};
+
+onMounted(() => {
+    calculateRemainingHeight();
+    window.addEventListener('resize', calculateRemainingHeight);
+});
 </script>
 <template>
-    <div>
+    <div ref="content">
         <h1>
             {{ authStore.name }}
         </h1>
-        <div class="mb-2">總點數：{{ authStore.records_len }}</div>
-        <div class="overflow-auto" :style="{
-            maxHeight: + 400 + `px`
+        <hr>
+        <div class="my-2">總點數：{{ authStore.records_len }}</div>
+        <div class="progress my-3" role="progressbar" aria-label="Example with label" aria-valuenow="25"
+            aria-valuemin="0" aria-valuemax="100">
+            <div class="progress-bar"
+                :style="{ 'width': authStore.records_len / recordsStore.data.length * 100 + `%` }">
+                {{ Math.round(authStore.records_len / recordsStore.data.length * 10000) / 100 }} %
+            </div>
+        </div>
+        <div class="mb-2">攤位參與人數佔總參與人數的 {{ Math.round(authStore.records_len / recordsStore.data.length * 10000) / 100 }}
+            %</div>
+        <div class="overflow-auto my-2" :style="{
+            maxHeight: remainingHeight - 140 + `px`
         }">
             <div class="card my-2" v-for="i in computed(() => authStore.records).value" :key="i.created_time">
                 <div class="card-header d-flex align-items-center">
@@ -43,28 +73,6 @@ const time_formatter = new Intl.DateTimeFormat('zh-TW', {
                 <div class="card-body">
                     <!-- <p v-if="i.club_stamp != ''">{{ i.club_stamp }}</p> -->
                     集點人：{{ i.user_name }}
-                </div>
-            </div>
-        </div>
-
-        <!-- Modal -->
-        <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5">登出確認</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <p>確認要登出帳號嗎？</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary mx-2" data-bs-dismiss="modal">取消</button>
-                        <button type="button" class="btn btn-danger mx-2" data-bs-dismiss="modal"
-                            @click="authStore.logout(); router.push('/');">
-                            登出
-                        </button>
-                    </div>
                 </div>
             </div>
         </div>
