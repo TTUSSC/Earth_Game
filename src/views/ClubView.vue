@@ -60,7 +60,7 @@ const time_formatter = new Intl.DateTimeFormat('zh-TW', {
                 <div class="card-body icon-link icon-link-hover"
                     style="--bs-icon-link-transform: translate3d(0, -.25rem, 0);">
                     修改社團帳號資料
-                    <i class="fa-solid fa-stamp bi ms-auto"></i>
+                    <i class="fa-solid fa-pen-to-square bi ms-auto"></i>
                 </div>
             </div>
             <div class="card-btn card mb-2">
