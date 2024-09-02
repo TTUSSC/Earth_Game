@@ -167,12 +167,15 @@ const clearForm = () => {
             <div class="col-md-6">
                 <label for="" class="form-label">密碼</label>
                 <input type="text" v-model="password_raw" class="form-control" :class="{ 'is-invalid': !passwordError }"
-                    name="password" id="password" placeholder="密碼" required>
+                    name="password" id="password" placeholder="密碼（留白不改密碼）" required>
                 <div class="invalid-feedback">{{ errors.password }}</div>
             </div>
             <div class="col-6 d-grid mx-auto">
-                <button type="submit" class="btn btn-primary" :disabled="!isFormValid || isLoading">{{ isLoading ?
-                    '提交中...' : '送出' }}</button>
+                <button type="submit" class="btn btn-primary" :disabled="!isFormValid || isLoading">
+                    {{ isLoading ? '提交中...' : '送出' }}</button>
+            </div>
+            <div class="col-6 d-grid mx-auto">
+                <button class="btn btn-danger" @click="router.push({ name: 'panel' });">取消</button>
             </div>
         </form>
 
