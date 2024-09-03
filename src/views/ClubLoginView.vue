@@ -47,6 +47,7 @@ const sendForm = async () => {
         const isValid = await validForm();
         console.log('hashed password:', sha256(password.value));
         await authStore.club_login(email.value, sha256(password.value));
+        console.log(isValid, authStore.isLoggedIn, authStore.is_club)
         if (isValid && authStore.isLoggedIn && authStore.is_club) {
             console.log('Club login successfully')
             isError.value = false;
@@ -120,6 +121,7 @@ const clearForm = () => {
         <div v-if="pageMsg" class="mt-3 text-break" :class="['alert', isError ? 'alert-danger' : 'alert-success']"
             role="alert">
             {{ pageMsg }}
+            <button type="button" class="btn-close" @click="pageMsg = '';"></button>
         </div>
         <form :class="formClass" @submit.prevent="sendForm" novalidate>
             <div class="col-md-6">

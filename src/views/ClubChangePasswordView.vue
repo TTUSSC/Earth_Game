@@ -46,22 +46,22 @@ const sendForm = async () => {
     try {
         const isValid = true;
         if (isValid) {
-            console.log('prepare form data');
+            console.log('[*] 準備表單資料');
             const formData = new FormData();
             formData.append("entry.1657837598", name.value);
             formData.append("entry.478569220", email.value.toLowerCase());
             formData.append("entry.433170047", password_raw.value == "" ? "" : password.value);
             formData.append("entry.504494998", text.value);
-            console.log('開始發送社團註冊請求');
+            console.log('[*] 開始發送社團修改請求');
             await fetch('https://docs.google.com/forms/u/2/d/e/1FAIpQLSfTqC-Z6ByQYiYedMlCGtwsJ1jdZr8Ci5_QtkCunPgNEoVcbA/formResponse', {
                 method: 'POST',
                 mode: 'no-cors',
                 body: formData
             });
-            console.log('社團註冊送出成功')
-            console.log("Submitted email:", email.value);
+            console.log('[+] 社團修改送出成功')
+            console.log("[*] Submitted email:", email.value);
 
-            console.log("開始檢查註冊狀態");
+            console.log("[*] 開始檢查修改狀態");
             let club = null;
             // 嘗試 5 次
             for (let i = 0; i < 5; i++) {
@@ -77,12 +77,9 @@ const sendForm = async () => {
             }
 
             if (!isError.value) {
-                pageMsg.value = "註冊成功！";
-                console.log("trying to login.");
+                pageMsg.value = "[+] 修改成功！";
+                console.log("[*] 更新社團資料");
                 await clubsStore.callAPI();
-                await authStore.club_login(email.value, password.value);
-                console.log('name:', authStore.name);
-                console.log('email:', authStore.email);
                 isLoading.value = false;
                 clearForm();
                 router.push({
@@ -149,6 +146,7 @@ const clearForm = () => {
         <!-- 顯示註冊結果訊息 -->
         <div v-if="pageMsg" class="mt-3" :class="['alert', isError ? 'alert-danger' : 'alert-success']" role="alert">
             {{ pageMsg }}
+            <button type="button" class="btn-close" @click="pageMsg = '';"></button>
         </div>
         <form class="row g-3 my-3 needs-validation" :class="{ 'was-validated': was_validated }"
             @submit.prevent="sendForm" novalidate>

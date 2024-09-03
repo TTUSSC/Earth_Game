@@ -32,15 +32,16 @@ export const useClubsStore = defineStore('clubs', {
             console.log("club not found.");
             return null;
         },
-        async get_user_by_email_password(email, password) {
+        async get_club_by_email_password(email, password) {
             if (this.data === null) await this.callAPI();
             for (let i = 0; i < this.data.length; i++) {
                 console.log(this.data[i]['email'], this.data[i]['password']);
                 if (this.data[i]['email'] == email && this.data[i]['password'] == password) {
+                    console.log('club found.', this.data[i]);
                     return this.data[i];
                 }
             }
-            console.log('club not found.')
+            console.log('club not found.');
             return false;
         }
     },

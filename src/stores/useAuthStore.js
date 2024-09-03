@@ -59,10 +59,10 @@ export const useAuthStore = defineStore('auth', {
         async club_login(email, password) {
             console.log("email:", email, "password:", password);
             const clubStore = useClubsStore();
-            const club = await clubStore.get_user_by_email_password(email, password);
-            console.log('club: ' + club);
+            const club = await clubStore.get_club_by_email_password(email, password);
 
             if (club) {
+                console.log('[*] 設定社團登入資料');
                 this.token = club["club_id"];
                 this.access_priv = club["access_priv"];
                 this.is_staff = club["is_staff"];
@@ -71,7 +71,7 @@ export const useAuthStore = defineStore('auth', {
                 this.name = club["name"];
                 this.email = club["email"];
                 this.stamp_text = club["text_on_stamp"];
-                console.log("club login successful!");
+                console.log("club login successful! token is", this.token);
             } else {
                 console.log('login failed :(');
                 return;
@@ -159,7 +159,7 @@ export const useAuthStore = defineStore('auth', {
         }
     },
     getters: {
-        isLoggedIn: (state) => !!state.token,
+        isLoggedIn: (state) => state.token != null,
         records_len: (state) => {
             if (state.records == null) return 0;
             else return state.records.length;
