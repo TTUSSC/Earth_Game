@@ -118,8 +118,8 @@ const clearForm = () => {
     <div>
         <h1 class="mb-4">社團登入</h1>
         <!-- 顯示註冊結果訊息 -->
-        <div v-if="pageMsg" class="mt-3 text-break" :class="['alert', isError ? 'alert-danger' : 'alert-success']"
-            role="alert">
+        <div v-if="pageMsg" class="mt-3 text-break alert-dismissible"
+            :class="['alert', isError ? 'alert-danger' : 'alert-success']" role="alert">
             {{ pageMsg }}
             <button type="button" class="btn-close" @click="pageMsg = '';"></button>
         </div>

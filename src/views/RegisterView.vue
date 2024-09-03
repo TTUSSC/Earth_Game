@@ -191,9 +191,10 @@ const clearForm = () => {
     <div>
         <h1>註冊</h1>
         <!-- 顯示註冊結果訊息 -->
-        <div v-if="registrationMessage" class="mt-3" :class="['alert', isError ? 'alert-danger' : 'alert-success']"
-            role="alert">
+        <div v-if="registrationMessage" class="mt-3 alert-dismissible"
+            :class="['alert', isError ? 'alert-danger' : 'alert-success']" role="alert">
             {{ registrationMessage }}
+            <button type="button" class="btn-close" @click="pageMsg = '';"></button>
         </div>
         <form class="row g-3 my-3 needs-validation" :class="{ 'was-validated': was_validated }"
             @submit.prevent="sendForm" novalidate>

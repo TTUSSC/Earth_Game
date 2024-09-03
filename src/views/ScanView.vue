@@ -187,9 +187,10 @@ const type_name = computed(() => {
     <div>
         <div v-if="authStore.isLoggedIn && authStore.is_club">
             <h1 class="mb-4">{{ authStore.name }}：{{ type_name ? type_name : "錯誤" }}</h1>
-            <div v-if="pageMsg" class="mt-3 text-break " :class="['alert', isError ? 'alert-danger' : 'alert-success']"
-                role="alert">
+            <div v-if="pageMsg" class="mt-3 text-break alert-dismissible"
+                :class="['alert', isError ? 'alert-danger' : 'alert-success']" role="alert">
                 {{ pageMsg }}
+                <button type="button" class="btn-close" @click="pageMsg = '';"></button>
             </div>
             <QRcodeReader @scan-success="handleScanSuccess" />
             <div class="row mb-2 mx-5">
