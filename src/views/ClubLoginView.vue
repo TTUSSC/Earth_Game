@@ -39,15 +39,15 @@ const errors = ref({
     password: ''
 });
 
-var formClass = ref("row g-3 my-3 needs-validation");
+var was_validated = ref(false);
 
 const sendForm = async () => {
     isLoading.value = true;
     try {
         const isValid = await validForm();
+        was_validated.value = true;
         console.log('hashed password:', sha256(password.value));
         await authStore.club_login(email.value, sha256(password.value));
-        console.log(isValid, authStore.isLoggedIn, authStore.is_club)
         if (isValid && authStore.isLoggedIn && authStore.is_club) {
             console.log('Club login successfully')
             isError.value = false;
@@ -86,7 +86,6 @@ const validateField = (field, value, rules) => {
         return false;
     }
     errors.value[field] = '';
-    formClass.value = "row g-3 my-3 needs-validation was-validated"
     return true;
 };
 
@@ -102,7 +101,7 @@ const isFormValid = computed(() => {
 async function validForm() {
     // 欄位驗證
     if (!isFormValid.value) {
-        formClass.value = "row g-3 my-3 needs-validation was-validated"
+        was_validated.value = ture;
         return false;
     }
     return true;
@@ -123,7 +122,8 @@ const clearForm = () => {
             {{ pageMsg }}
             <button type="button" class="btn-close" @click="pageMsg = '';"></button>
         </div>
-        <form :class="formClass" @submit.prevent="sendForm" novalidate>
+        <form class="row g-3 my-3 needs-validation" :class="{ 'was-validated': was_validated }"
+            @submit.prevent="sendForm" novalidate>
             <div class="col-md-6">
                 <input type="email" v-model="email" class="form-control" :class="{ 'is-invalid': !emailError }"
                     name="email" id="email" placeholder="電子郵件" required>
