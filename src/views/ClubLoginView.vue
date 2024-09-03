@@ -101,7 +101,7 @@ const isFormValid = computed(() => {
 async function validForm() {
     // 欄位驗證
     if (!isFormValid.value) {
-        was_validated.value = ture;
+        was_validated.value = true;
         return false;
     }
     return true;
