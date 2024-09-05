@@ -38,8 +38,8 @@ const router = useRouter();
                 </a>
                 公告領獎時間，屆時再請至學生會辦公室領取獎品，詳情待學生會公告相關資訊。
             </p>
-            <div class="container">
-                <button class="btn btn-primary btn-lg" @click="router.push({ name: 'stamp' });">
+            <div class="container my-4 d-flex">
+                <button class="btn btn-primary btn-lg mx-auto" @click="router.push({ name: 'stamp' });">
                     參與集點活動！
                 </button>
             </div>
