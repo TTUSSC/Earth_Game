@@ -46,6 +46,10 @@ export const useRecordsStore = defineStore('records', {
             for (let i = 0; i < this.data.length; i++) {
                 if (this.data[i]['user_email'] === user_email) {
                     club.value = await clubsStore.get_club_by_email(this.data[i]['club_email']);
+                    if (club.value == null) {
+                        console.error('[-] 找不到社團資料', club.value);
+                        continue;
+                    }
                     //let user_name = "";
                     let club_name = club.value.name;
                     let club_stamp = club.value.text_on_stamp;

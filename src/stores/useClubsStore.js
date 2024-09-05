@@ -27,9 +27,10 @@ export const useClubsStore = defineStore('clubs', {
             if (this.data === null) await this.callAPI();
             const club = this.data.find(club => club.email === email);
             if (club) {
+                console.log('[+] 找到 email 為', email, '的帳號');
                 return club;
             }
-            console.log("club not found.");
+            console.warn('[+] 找不到 email 為', email, '的帳號');
             return null;
         },
         async get_club_by_email_password(email, password) {
@@ -37,11 +38,11 @@ export const useClubsStore = defineStore('clubs', {
             for (let i = 0; i < this.data.length; i++) {
                 console.log(this.data[i]['email'], this.data[i]['password']);
                 if (this.data[i]['email'] == email && this.data[i]['password'] == password) {
-                    console.log('club found.', this.data[i]);
+                    console.log('[+] 找到 email 為', email, 'password 為', password, '的帳號');
                     return this.data[i];
                 }
             }
-            console.log('club not found.');
+            console.warn('[-] 找不到 email 為', email, 'password 為', password, '的帳號');
             return false;
         }
     },
