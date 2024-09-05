@@ -246,8 +246,8 @@ const clearForm = () => {
                     <input type="checkbox" class="form-check-input" :class="{ 'is-invalid': !checkError }"
                         v-model="formCheck" id="gridCheck" required>
                     <label class="form-check-label" for="gridCheck">
-                        同意<a data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false"
-                            aria-controls="collapseExample">資料使用條款</a>
+                        同意<a class="license" data-bs-toggle="collapse" data-bs-target="#collapseExample"
+                            aria-expanded="false" aria-controls="collapseExample">資料使用條款</a>
                     </label>
                     <div class="invalid-feedback">{{ errors.check }}</div>
                 </div>
@@ -301,5 +301,13 @@ const clearForm = () => {
     justify-content: center;
     align-items: center;
     z-index: 9999;
+}
+
+.license {
+    color: rgb(13, 110, 253);
+}
+
+.license:hover {
+    color: rgb(10, 88, 202);
 }
 </style>
