@@ -14,7 +14,7 @@ const router = useRouter();
             <p><mark><strong>每個人會以抽到的最大獎為優先，不得重複領獎。</strong></mark></p>
             <h3>獲得點數的方式</h3>
             <p>
-            <ol>
+            <ol class="list-style">
                 <li>在各社團攤位進行活動</li>
                 <li>在各社團攤位進行打卡，並標記 <a class="" style="text-decoration: none;">#TTU社團博覽會</a>
                 </li>
